@@ -336,7 +336,218 @@ window.PRICING_DATA = {
           "note": "1M 上下文，384K 最大输出。"
         }
       ]
+    },
+    {
+      "id": "zhipu",
+      "name": "智谱 AI",
+      "short": "GLM",
+      "color": "#26a5e4",
+      "site": "https://open.bigmodel.cn/pricing",
+      "models": [
+        {
+          "api": "glm-5.2",
+          "name": "Glm 5.2",
+          "input": 0.7042,
+          "output": 2.2132
+        },
+        {
+          "api": "glm-5.1",
+          "name": "Glm 5.1",
+          "input": 0.966,
+          "output": 3.036
+        },
+        {
+          "api": "glm-5",
+          "name": "Glm 5",
+          "input": 0.95,
+          "output": 2.55
+        },
+        {
+          "api": "glm-4.7",
+          "name": "Glm 4.7",
+          "input": 0.4,
+          "output": 1.75
+        },
+        {
+          "api": "glm-4.7-flash",
+          "name": "Glm 4.7 Flash",
+          "input": 0.06,
+          "output": 0.4
+        },
+        {
+          "api": "glm-4.6",
+          "name": "Glm 4.6",
+          "input": 0.5,
+          "output": 2.0
+        },
+        {
+          "api": "glm-4.5",
+          "name": "Glm 4.5",
+          "input": 0.6,
+          "output": 2.2
+        },
+        {
+          "api": "glm-4.5-air",
+          "name": "Glm 4.5 Air",
+          "input": 0.13,
+          "output": 0.85
+        }
+      ]
+    },
+    {
+      "id": "qwen",
+      "name": "千问 (通义)",
+      "short": "Qwen",
+      "color": "#ff6a00",
+      "site": "https://www.alibabacloud.com/help/en/model-studio/models",
+      "models": [
+        {
+          "api": "qwen3.7-max",
+          "name": "Qwen3.7 Max",
+          "input": 1.475,
+          "output": 4.425
+        },
+        {
+          "api": "qwen3.7-plus",
+          "name": "Qwen3.7 Plus",
+          "input": 0.32,
+          "output": 1.28
+        },
+        {
+          "api": "qwen3.7-flash",
+          "name": "Qwen3.7 Flash",
+          "input": 0.03,
+          "output": 0.13
+        },
+        {
+          "api": "qwen3.6-max-preview",
+          "name": "Qwen3.6 Max Preview",
+          "input": 1.027,
+          "output": 6.162
+        },
+        {
+          "api": "qwen3.6-plus",
+          "name": "Qwen3.6 Plus",
+          "input": 0.325,
+          "output": 1.95
+        },
+        {
+          "api": "qwen3.6-flash",
+          "name": "Qwen3.6 Flash",
+          "input": 0.1875,
+          "output": 1.125
+        },
+        {
+          "api": "qwen3-max",
+          "name": "Qwen3 Max",
+          "input": 0.78,
+          "output": 3.9
+        },
+        {
+          "api": "qwen3-coder",
+          "name": "Qwen3 Coder",
+          "input": 0.3,
+          "output": 1.0
+        },
+        {
+          "api": "qwen-plus",
+          "name": "Qwen Plus",
+          "input": 0.26,
+          "output": 0.78
+        }
+      ]
+    },
+    {
+      "id": "kimi",
+      "name": "Kimi (月之暗面)",
+      "short": "Kimi",
+      "color": "#e53835",
+      "site": "https://platform.moonshot.cn/docs/pricing",
+      "models": [
+        {
+          "api": "kimi-k3",
+          "name": "Kimi K3",
+          "input": 3.0,
+          "output": 15.0
+        },
+        {
+          "api": "kimi-k2.7-code",
+          "name": "Kimi K2.7 Code",
+          "input": 0.73,
+          "output": 3.5
+        },
+        {
+          "api": "kimi-k2.6",
+          "name": "Kimi K2.6",
+          "input": 0.6,
+          "output": 3.41
+        },
+        {
+          "api": "kimi-k2.5",
+          "name": "Kimi K2.5",
+          "input": 0.57,
+          "output": 2.85
+        },
+        {
+          "api": "kimi-k2-thinking",
+          "name": "Kimi K2 Thinking",
+          "input": 0.6,
+          "output": 2.5
+        },
+        {
+          "api": "kimi-k2",
+          "name": "Kimi K2",
+          "input": 0.57,
+          "output": 2.3
+        }
+      ]
+    },
+    {
+      "id": "minimax",
+      "name": "MiniMax",
+      "short": "MiniMax",
+      "color": "#7c3aed",
+      "site": "https://www.minimax.io/platform/pricing",
+      "models": [
+        {
+          "api": "minimax-m3",
+          "name": "Minimax M3",
+          "input": 0.3,
+          "output": 1.2
+        },
+        {
+          "api": "minimax-m2.7",
+          "name": "Minimax M2.7",
+          "input": 0.25,
+          "output": 1.0
+        },
+        {
+          "api": "minimax-m2.5",
+          "name": "Minimax M2.5",
+          "input": 0.15,
+          "output": 0.9
+        },
+        {
+          "api": "minimax-m2.1",
+          "name": "Minimax M2.1",
+          "input": 0.3,
+          "output": 1.2
+        },
+        {
+          "api": "minimax-m2",
+          "name": "Minimax M2",
+          "input": 0.255,
+          "output": 1.02
+        },
+        {
+          "api": "minimax-m1",
+          "name": "Minimax M1",
+          "input": 0.55,
+          "output": 2.2
+        }
+      ]
     }
   ],
-  "updatedAt": "2026-08-03"
+  "updatedAt": "2026-08-03",
+  "cnyRate": 6.7598
 };

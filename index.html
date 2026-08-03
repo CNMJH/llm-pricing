@@ -47,19 +47,26 @@
   }
   h1 { font-size: clamp(22px, 4vw, 30px); font-weight: 800; letter-spacing: .3px; }
   .subtitle { color: var(--text-dim); margin-top: 10px; font-size: 15px; }
+  .badges { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
   .updated {
     display: inline-flex; align-items: center; gap: 7px;
-    margin-top: 14px; padding: 6px 12px; border-radius: 999px;
+    padding: 6px 12px; border-radius: 999px;
     background: var(--accent-soft); color: var(--accent);
     font-size: 13px; font-weight: 600;
   }
   .updated::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px rgba(52,211,153,.2); }
+  .rate-badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 6px 12px; border-radius: 999px;
+    background: rgba(52,211,153,.1); color: var(--green);
+    font-size: 13px; font-weight: 600;
+  }
 
   /* Controls */
   .controls { position: sticky; top: 0; z-index: 20; padding: 14px 0; background: linear-gradient(var(--bg) 70%, transparent); }
   .controls-bar { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
   #search {
-    flex: 1; min-width: 200px; padding: 11px 16px;
+    flex: 1; min-width: 180px; padding: 11px 16px;
     border-radius: 10px; border: 1px solid var(--border);
     background: var(--card); color: var(--text); font-size: 14px;
     outline: none; transition: border-color .15s, box-shadow .15s;
@@ -68,7 +75,7 @@
   #search::placeholder { color: var(--text-faint); }
   .chips { display: flex; gap: 8px; flex-wrap: wrap; }
   .chip {
-    padding: 8px 14px; border-radius: 9px; border: 1px solid var(--border);
+    padding: 8px 12px; border-radius: 9px; border: 1px solid var(--border);
     background: var(--card); color: var(--text-dim); font-size: 13px; font-weight: 600;
     cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 6px;
   }
@@ -87,13 +94,16 @@
   .view-toggle button.active { background: var(--accent); color: #fff; }
 
   /* Sort row */
-  .sort-row { display: flex; align-items: center; gap: 10px; margin: 10px 0 0; font-size: 13px; color: var(--text-dim); }
+  .sort-row { display: flex; align-items: center; gap: 10px; margin: 10px 0 0; font-size: 13px; color: var(--text-dim); flex-wrap: wrap; }
   .sort-row button {
     background: none; border: 1px solid var(--border); color: var(--text-dim);
     padding: 5px 10px; border-radius: 8px; font-size: 12px; cursor: pointer; transition: all .15s;
   }
   .sort-row button:hover, .sort-row button.active { border-color: var(--accent); color: var(--accent); }
   .sort-row .hint { margin-left: auto; font-size: 12px; color: var(--text-faint); }
+  .sort-row .spacer { flex: 1; }
+  .btn-hidden { border-color: var(--red) !important; color: var(--red) !important; }
+  .btn-hidden.active { background: var(--red); color: #fff !important; border-color: var(--red) !important; }
 
   /* Provider sections (card) */
   .provider { margin: 30px 0; }
@@ -113,6 +123,7 @@
     display: flex; flex-direction: column; gap: 10px;
   }
   .card:hover { transform: translateY(-3px); border-color: var(--accent); background: var(--card-hover); }
+  .card.hidden-model { opacity: .55; border-style: dashed; }
   .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
   .model-name { font-size: 15px; font-weight: 700; }
   .model-badge {
@@ -121,19 +132,28 @@
   }
   .model-badge.flag { background: rgba(248,113,113,.14); color: var(--red); }
   .model-badge.green { background: rgba(52,211,153,.14); color: var(--green); }
+  .model-badge.hidden { background: rgba(148,163,184,.14); color: var(--text-dim); }
   .api-id { font-family: var(--mono); font-size: 11.5px; color: var(--text-faint); word-break: break-all; }
   .prices { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .price-box { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 10px; padding: 9px 11px; }
   .price-label { font-size: 11px; color: var(--text-faint); font-weight: 600; text-transform: uppercase; letter-spacing: .4px; }
-  .price-value { font-family: var(--mono); font-size: 17px; font-weight: 700; margin-top: 2px; }
+  .price-value { font-family: var(--mono); font-size: 16px; font-weight: 700; margin-top: 2px; line-height: 1.2; }
   .price-value small { font-size: 11px; color: var(--text-faint); font-weight: 500; }
-  .meta { display: flex; flex-wrap: wrap; gap: 6px; }
+  .price-usd { font-family: var(--mono); font-size: 11px; color: var(--text-faint); margin-top: 2px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
   .meta-tag { font-size: 11px; color: var(--text-dim); background: var(--bg-soft); border: 1px solid var(--border); padding: 3px 8px; border-radius: 6px; }
+  .btn-hide {
+    margin-left: auto; font-size: 11px; color: var(--text-faint); background: none; border: 1px solid var(--border);
+    padding: 3px 9px; border-radius: 6px; cursor: pointer; transition: all .15s;
+  }
+  .btn-hide:hover { color: var(--red); border-color: var(--red); }
+  .btn-hide.restore { color: var(--green); }
+  .btn-hide.restore:hover { border-color: var(--green); }
   .note { font-size: 12px; color: var(--text-faint); line-height: 1.5; }
 
   /* Table view */
   .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); box-shadow: var(--shadow); }
-  table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 760px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 880px; }
   thead th {
     text-align: left; padding: 12px 14px; font-size: 12px; font-weight: 700; color: var(--text-dim);
     border-bottom: 1px solid var(--border); white-space: nowrap; cursor: pointer; user-select: none;
@@ -144,17 +164,22 @@
   tbody td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
   tbody tr:last-child td { border-bottom: none; }
   tbody tr:hover { background: var(--card-hover); }
+  tbody tr.hidden-model { opacity: .5; }
   .t-provider { display: flex; align-items: center; gap: 8px; white-space: nowrap; font-weight: 600; }
   .t-provider .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
   .t-model-name { font-weight: 700; }
   .t-api { font-family: var(--mono); font-size: 11.5px; color: var(--text-faint); }
   .t-price { font-family: var(--mono); font-weight: 700; white-space: nowrap; }
-  .t-input { color: var(--text); }
-  .t-output { color: var(--text); }
-  .t-note { color: var(--text-faint); font-size: 12px; max-width: 260px; }
+  .t-price .usd { font-size: 10.5px; color: var(--text-faint); font-weight: 500; }
+  .t-note { color: var(--text-faint); font-size: 12px; max-width: 240px; }
   .t-badge { font-size: 10.5px; padding: 2px 7px; border-radius: 5px; font-weight: 700; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
   .t-badge.flag { background: rgba(248,113,113,.14); color: var(--red); }
   .t-badge.green { background: rgba(52,211,153,.14); color: var(--green); }
+  .t-badge.hidden { background: rgba(148,163,184,.14); color: var(--text-dim); }
+  .btn-hide-cell { font-size: 11px; color: var(--text-faint); background: none; border: 1px solid var(--border); padding: 3px 9px; border-radius: 6px; cursor: pointer; }
+  .btn-hide-cell:hover { color: var(--red); border-color: var(--red); }
+  .btn-hide-cell.restore { color: var(--green); }
+  .btn-hide-cell.restore:hover { border-color: var(--green); }
 
   /* Calculator */
   .calc { margin: 34px 0; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
@@ -171,6 +196,7 @@
   .calc-result .big { font-size: 26px; font-weight: 800; font-family: var(--mono); color: var(--accent); }
   .calc-result .detail { font-size: 13px; color: var(--text-dim); margin-top: 6px; }
   .calc-result .detail b { color: var(--text); }
+  .calc-result .usd-small { font-size: 12px; color: var(--text-faint); margin-top: 2px; }
 
   footer { text-align: center; color: var(--text-faint); font-size: 12.5px; padding: 40px 0 50px; line-height: 1.8; }
   #empty { display: none; text-align: center; color: var(--text-dim); padding: 60px 0; font-size: 15px; }
@@ -190,8 +216,11 @@
       <div class="logo">LLM</div>
       <h1>大模型 API 价格速查</h1>
     </div>
-    <p class="subtitle">主流大模型推理 API 的单位价格（单位：美元 / 每百万 tokens）。数据由官方定价页与 OpenRouter 每天自动更新，仅供参考，实际以厂商账单为准。</p>
-    <span class="updated">数据更新于 <span id="updated-date">—</span></span>
+    <p class="subtitle">主流大模型推理 API 的单位价格（人民币 / 每百万 tokens）。数据由 OpenRouter 与官方定价页每天自动更新，仅供参考，实际以厂商账单为准。</p>
+    <div class="badges">
+      <span class="updated">数据更新于 <span id="updated-date">—</span></span>
+      <span class="rate-badge" id="rate-badge">汇率 —</span>
+    </div>
   </header>
 
   <div class="controls">
@@ -209,6 +238,8 @@
       <button data-sort="price_in">输入价 ↑</button>
       <button data-sort="price_out">输出价 ↓</button>
       <span class="hint" id="sort-hint">表格模式下可点击表头排序</span>
+      <button id="toggle-hidden" class="btn-hidden">已隐藏 (0)</button>
+      <button id="reset-hidden">恢复全部</button>
     </div>
   </div>
 
@@ -218,7 +249,7 @@
 
   <section class="calc">
     <h2>💡 成本估算器</h2>
-    <p class="desc">输入你的 token 用量，估算一次调用或一个月的费用。</p>
+    <p class="desc">输入你的 token 用量，估算一次调用或一个月的费用（按当前汇率换算成人民币）。</p>
     <div class="calc-grid">
       <div class="calc-field">
         <label>选择模型</label>
@@ -234,22 +265,39 @@
       </div>
     </div>
     <div class="calc-result">
-      <div class="big" id="calc-total">$0.00</div>
+      <div class="big" id="calc-total">¥0.00</div>
       <div class="detail" id="calc-detail"></div>
+      <div class="usd-small" id="calc-usd"></div>
     </div>
   </section>
 
   <footer>
-    数据来源：各厂商官方定价页 + OpenRouter Models API（每天自动更新）<br>
-    价格会随厂商政策变动，请以官网最新页面为准
+    数据来源：OpenRouter Models API + 各厂商官方定价页（每天 10:00 自动更新）<br>
+    汇率为公开接口实时抓取，价格会随厂商政策变动，请以官网最新页面为准
   </footer>
 </div>
 
 <script src="data.js"></script>
 <script>
 const PROVIDERS = (window.PRICING_DATA && window.PRICING_DATA.providers) || [];
-const updatedAtEl = document.getElementById("updated-date");
-if (window.PRICING_DATA && window.PRICING_DATA.updatedAt) updatedAtEl.textContent = window.PRICING_DATA.updatedAt;
+const RATE = (window.PRICING_DATA && window.PRICING_DATA.cnyRate) || 7.2;
+
+document.getElementById("updated-date").textContent = (window.PRICING_DATA && window.PRICING_DATA.updatedAt) || "—";
+document.getElementById("rate-badge").textContent = "汇率 USD 1 = ¥" + RATE.toFixed(2);
+
+/* ============ 隐藏功能状态 ============ */
+const HIDE_KEY = "llm-hidden-models";
+let hiddenSet = new Set();
+try { hiddenSet = new Set(JSON.parse(localStorage.getItem(HIDE_KEY) || "[]")); } catch (e) {}
+let showHidden = false;
+function hideKey(provider, model) { return provider.id + ":" + model.api; }
+function isHidden(provider, model) { return hiddenSet.has(hideKey(provider, model)); }
+function saveHidden() { localStorage.setItem(HIDE_KEY, JSON.stringify([...hiddenSet])); }
+function toggleHidden(provider, model) {
+  const k = hideKey(provider, model);
+  if (hiddenSet.has(k)) hiddenSet.delete(k); else hiddenSet.add(k);
+  saveHidden();
+}
 
 /* ============ 状态 ============ */
 const content = document.getElementById("content");
@@ -262,9 +310,18 @@ let viewMode = "card";
 let tableSort = { key: "provider", dir: 1 };
 
 /* ============ 工具 ============ */
-function fmt(v) {
+function fmtUSD(v) {
   if (v === undefined || v === null) return "—";
   return "$" + v.toLocaleString("en-US", { minimumFractionDigits: v < 1 ? 2 : v < 10 ? 2 : 0, maximumFractionDigits: 4 });
+}
+function fmtCNY(usd) {
+  if (usd === undefined || usd === null) return "—";
+  const c = usd * RATE;
+  return "¥" + c.toLocaleString("zh-CN", { minimumFractionDigits: c < 1 ? 2 : 0, maximumFractionDigits: 2 });
+}
+function fmtCNYexact(usd) {
+  if (usd === undefined || usd === null) return "—";
+  return "¥" + (usd * RATE).toLocaleString("zh-CN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 function buildChips() {
@@ -285,11 +342,13 @@ function filteredModels() {
   PROVIDERS.forEach(p => {
     if (currentProvider !== "all" && currentProvider !== p.id) return;
     p.models.forEach(m => {
+      const hidden = isHidden(p, m);
+      if (hidden && !showHidden) return;   // 隐藏的默认不显示
       if (search.value.trim()) {
         const q = search.value.trim().toLowerCase();
         if (!(m.name.toLowerCase().includes(q) || m.api.toLowerCase().includes(q) || p.name.toLowerCase().includes(q))) return;
       }
-      out.push({ provider: p, model: m });
+      out.push({ provider: p, model: m, hidden });
     });
   });
   if (currentSort === "price_in") out.sort((a, b) => a.model.input - b.model.input);
@@ -298,34 +357,39 @@ function filteredModels() {
 }
 
 /* ============ 卡片视图 ============ */
-function card(provider, model) {
+function card(provider, model, hidden) {
   const el = document.createElement("div");
-  el.className = "card";
-  const badgeCls = model.flag ? " flag" : (model.badge === "最便宜" || model.badge === "便宜" ? " green" : "");
+  el.className = "card" + (hidden ? " hidden-model" : "");
+  const badgeCls = hidden ? " hidden" : (model.flag ? " flag" : (model.badge === "最便宜" || model.badge === "便宜" ? " green" : ""));
+  const badgeText = hidden ? "已隐藏" : model.badge;
   el.innerHTML = `
     <div class="card-top">
       <div>
         <div class="model-name">${model.name}</div>
         <div class="api-id">${model.api}</div>
       </div>
-      ${model.badge ? `<span class="model-badge${badgeCls}">${model.badge}</span>` : ""}
+      ${badgeText ? `<span class="model-badge${badgeCls}">${badgeText}</span>` : ""}
     </div>
     <div class="prices">
       <div class="price-box">
         <div class="price-label">输入</div>
-        <div class="price-value price-in">${fmt(model.input)} <small>/MTok</small></div>
+        <div class="price-value price-in">${fmtCNY(model.input)} <small>/MTok</small></div>
+        <div class="price-usd">${fmtUSD(model.input)}</div>
       </div>
       <div class="price-box">
         <div class="price-label">输出</div>
-        <div class="price-value price-out">${fmt(model.output)} <small>/MTok</small></div>
+        <div class="price-value price-out">${fmtCNY(model.output)} <small>/MTok</small></div>
+        <div class="price-usd">${fmtUSD(model.output)}</div>
       </div>
     </div>
     <div class="meta">
       <span class="meta-tag">${provider.name}</span>
       ${model.ctx && model.ctx !== "—" ? `<span class="meta-tag">上下文 ${model.ctx}</span>` : ""}
+      <button class="btn-hide${hidden ? " restore" : ""}">${hidden ? "恢复" : "隐藏"}</button>
     </div>
     ${model.note ? `<p class="note">${model.note}</p>` : ""}
   `;
+  el.querySelector(".btn-hide").onclick = () => { toggleHidden(provider, model); render(); };
   return el;
 }
 
@@ -347,7 +411,7 @@ function renderCard(list) {
         ${p.note ? `<p class="note" style="margin:0 0 12px">${p.note}</p>` : ""}
         <div class="grid"></div>`;
       const grid = section.querySelector(".grid");
-      items.forEach(x => grid.appendChild(card(x.provider, x.model)));
+      items.forEach(x => grid.appendChild(card(x.provider, x.model, x.hidden)));
       content.appendChild(section);
     });
   } else {
@@ -355,7 +419,7 @@ function renderCard(list) {
     section.className = "provider";
     const grid = document.createElement("div");
     grid.className = "grid";
-    list.forEach(x => grid.appendChild(card(x.provider, x.model)));
+    list.forEach(x => grid.appendChild(card(x.provider, x.model, x.hidden)));
     section.appendChild(grid);
     content.appendChild(section);
   }
@@ -391,23 +455,27 @@ function renderTable(list) {
   wrap.innerHTML = `
     <table>
       <thead>
-        <tr>${th("厂商", "provider")}${th("模型", "model")}${th("API ID", "")}${th("上下文", "ctx")}${th("输入 $/MTok", "input")}${th("输出 $/MTok", "output")}${th("备注", "")}</tr>
+        <tr>${th("厂商", "provider")}${th("模型", "model")}${th("API ID", "")}${th("上下文", "ctx")}${th("输入 ¥/MTok", "input")}${th("输出 ¥/MTok", "output")}${th("备注", "")}${th("操作", "")}</tr>
       </thead>
       <tbody></tbody>
     </table>`;
   const tbody = wrap.querySelector("tbody");
   sorted.forEach(x => {
-    const m = x.model, p = x.provider;
-    const badgeCls = m.flag ? " flag" : (m.badge === "最便宜" || m.badge === "便宜" ? " green" : "");
+    const m = x.model, p = x.provider, hidden = x.hidden;
+    const badgeCls = hidden ? " hidden" : (m.flag ? " flag" : (m.badge === "最便宜" || m.badge === "便宜" ? " green" : ""));
+    const badgeText = hidden ? "已隐藏" : m.badge;
     const tr = document.createElement("tr");
+    tr.className = hidden ? "hidden-model" : "";
     tr.innerHTML = `
       <td><span class="t-provider"><span class="dot" style="background:${p.color}"></span>${p.name}</span></td>
-      <td><span class="t-model-name">${m.name}</span>${m.badge ? ` <span class="t-badge${badgeCls}">${m.badge}</span>` : ""}</td>
+      <td><span class="t-model-name">${m.name}</span>${badgeText ? ` <span class="t-badge${badgeCls}">${badgeText}</span>` : ""}</td>
       <td class="t-api">${m.api}</td>
       <td>${m.ctx && m.ctx !== "—" ? m.ctx : "—"}</td>
-      <td class="t-price t-input">${fmt(m.input)}</td>
-      <td class="t-price t-output">${fmt(m.output)}</td>
-      <td class="t-note">${m.note || ""}</td>`;
+      <td class="t-price t-input">${fmtCNYexact(m.input)}<br><span class="usd">${fmtUSD(m.input)}</span></td>
+      <td class="t-price t-output">${fmtCNYexact(m.output)}<br><span class="usd">${fmtUSD(m.output)}</span></td>
+      <td class="t-note">${m.note || ""}</td>
+      <td><button class="btn-hide-cell${hidden ? " restore" : ""}">${hidden ? "恢复" : "隐藏"}</button></td>`;
+    tr.querySelector(".btn-hide-cell").onclick = () => { toggleHidden(p, m); render(); };
     tbody.appendChild(tr);
   });
   wrap.querySelectorAll("thead th[data-key]").forEach(h => {
@@ -424,19 +492,33 @@ function renderTable(list) {
 function render() {
   const list = filteredModels();
   empty.style.display = list.length ? "none" : "block";
+  const hiddenCount = hiddenSet.size;
+  const btn = document.getElementById("toggle-hidden");
+  btn.textContent = showHidden ? "当前显示已隐藏" : `已隐藏 (${hiddenCount})`;
+  btn.classList.toggle("active", showHidden);
   if (viewMode === "table") renderTable(list);
   else renderCard(list);
 }
 
 /* ============ 事件 ============ */
 search.addEventListener("input", render);
-document.querySelectorAll(".sort-row button").forEach(btn => {
+document.querySelectorAll(".sort-row button[data-sort]").forEach(btn => {
   btn.addEventListener("click", () => {
-    document.querySelectorAll(".sort-row button").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".sort-row button[data-sort]").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     currentSort = btn.dataset.sort;
     render();
   });
+});
+document.getElementById("toggle-hidden").addEventListener("click", () => {
+  showHidden = !showHidden;
+  render();
+});
+document.getElementById("reset-hidden").addEventListener("click", () => {
+  hiddenSet.clear();
+  showHidden = false;
+  saveHidden();
+  render();
 });
 document.querySelectorAll("#view-toggle button").forEach(btn => {
   btn.addEventListener("click", () => {
@@ -455,10 +537,12 @@ const calcIn = document.getElementById("calc-in");
 const calcOut = document.getElementById("calc-out");
 const calcTotal = document.getElementById("calc-total");
 const calcDetail = document.getElementById("calc-detail");
+const calcUsd = document.getElementById("calc-usd");
 
 function buildCalcOptions() {
   PROVIDERS.forEach(p => {
     p.models.forEach(m => {
+      if (isHidden(p, m)) return;   // 隐藏的模型不出现在估算器里
       const opt = document.createElement("option");
       opt.value = JSON.stringify({ in: m.input, out: m.output });
       opt.textContent = `${p.name} · ${m.name}`;
@@ -470,9 +554,10 @@ function updateCalc() {
   const d = JSON.parse(calcModel.value);
   const inM = parseFloat(calcIn.value) || 0;
   const outM = parseFloat(calcOut.value) || 0;
-  const total = d.in * inM + d.out * outM;
-  calcTotal.textContent = "$" + total.toFixed(2);
-  calcDetail.innerHTML = `输入 ${inM}M × <b>$${d.in}</b> + 输出 ${outM}M × <b>$${d.out}</b>`;
+  const usd = d.in * inM + d.out * outM;
+  calcTotal.textContent = fmtCNYexact(usd);
+  calcDetail.innerHTML = `输入 ${inM}M × <b>¥${fmtCNYexact(d.in).slice(1)}</b> + 输出 ${outM}M × <b>¥${fmtCNYexact(d.out).slice(1)}</b>`;
+  calcUsd.textContent = `≈ ${fmtUSD(usd)}（汇率 USD 1 = ¥${RATE.toFixed(2)}）`;
 }
 [calcModel, calcIn, calcOut].forEach(el => el.addEventListener("input", updateCalc));
 

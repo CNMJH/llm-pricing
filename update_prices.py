@@ -11,8 +11,10 @@
 
 说明：
   - OpenRouter 的 pricing 单位是「美元 / 每 token」，这里统一换算成「美元 / 每百万 tokens」。
+    页面展示时按 fetch_exchange_rate() 获取的实时汇率换算成人民币（CNY）。
   - 官方页面多为 JS 渲染（OpenAI / Anthropic 会被拦截），简单抓取可能返回 0 或错误值，
     因此不作为主动数据源，仅作离线兜底。
+  - 覆盖厂商：Anthropic / OpenAI / Google Gemini / DeepSeek / 智谱 / 千问 / Kimi / MiniMax。
   - 只更新 TARGET_IDS / 旧数据里已有的模型，保留手工维护的中文名、备注、徽章。
 
 用法：
@@ -37,7 +39,18 @@ PROVIDER_MAP = [
     ("openai", "openai", "OpenAI"),
     ("google", "gemini", "Google Gemini"),
     ("deepseek", "deepseek", "DeepSeek"),
+    ("z-ai", "zhipu", "智谱 AI"),
+    ("qwen", "qwen", "千问 (通义)"),
+    ("moonshotai", "kimi", "Kimi (月之暗面)"),
+    ("minimax", "minimax", "MiniMax"),
 ]
+# 新厂商的展示元数据（脚本兜底时使用；data.js 里已有则优先保留 data.js 的）
+PROVIDER_META = {
+    "zhipu": {"name": "智谱 AI", "short": "GLM", "color": "#26a5e4", "site": "https://open.bigmodel.cn/pricing"},
+    "qwen": {"name": "千问 (通义)", "short": "Qwen", "color": "#ff6a00", "site": "https://www.alibabacloud.com/help/en/model-studio/models"},
+    "kimi": {"name": "Kimi (月之暗面)", "short": "Kimi", "color": "#e53835", "site": "https://platform.moonshot.cn/docs/pricing"},
+    "minimax": {"name": "MiniMax", "short": "MiniMax", "color": "#7c3aed", "site": "https://www.minimax.io/platform/pricing"},
+}
 # 各厂商希望保留的模型 api（与 data.js 的 api 字段一致，去掉厂商前缀）。
 # 留空 [] 表示该厂商保留旧数据里已有的全部模型。
 TARGET_IDS = {
@@ -60,6 +73,23 @@ TARGET_IDS = {
     ],
     "deepseek": [
         "deepseek-v4-flash", "deepseek-v4-pro",
+    ],
+    "zhipu": [
+        "glm-5.2", "glm-5.1", "glm-5", "glm-4.7", "glm-4.7-flash",
+        "glm-4.6", "glm-4.5", "glm-4.5-air",
+    ],
+    "qwen": [
+        "qwen3.7-max", "qwen3.7-plus", "qwen3.7-flash",
+        "qwen3.6-max-preview", "qwen3.6-plus", "qwen3.6-flash",
+        "qwen3-max", "qwen3-coder", "qwen-plus",
+    ],
+    "kimi": [
+        "kimi-k3", "kimi-k2.7-code", "kimi-k2.6", "kimi-k2.5",
+        "kimi-k2-thinking", "kimi-k2",
+    ],
+    "minimax": [
+        "minimax-m3", "minimax-m2.7", "minimax-m2.5", "minimax-m2.1",
+        "minimax-m2", "minimax-m1",
     ],
 }
 
@@ -85,6 +115,15 @@ def parse_float(s):
         return None
     m = re.search(r"[\d]+(?:\.\d+)?", str(s).replace(",", ""))
     return float(m.group(0)) if m else None
+
+
+def fetch_exchange_rate():
+    """获取 USD->CNY 实时汇率（用于把美元价格换算成人民币显示）。"""
+    data = json.loads(fetch("https://open.er-api.com/v6/latest/USD", timeout=20))
+    cny = data.get("rates", {}).get("CNY")
+    if not cny:
+        raise ValueError("汇率接口未返回 CNY")
+    return round(float(cny), 4)
 
 
 # ---------- 官方页面解析（尽力而为；官方价格已是 美元/每百万 tokens） ----------
@@ -173,6 +212,9 @@ def main():
     # 1) 官方抓取为兜底：仅当 OpenRouter 不可用时才使用（key 用 data.js 厂商 id）
     official = {}
     for or_prefix, dpid, _label in PROVIDER_MAP:
+        if dpid not in OFFICIAL_PARSERS or dpid not in OFFICIAL_URLS:
+            official[dpid] = {}
+            continue
         try:
             html = fetch(OFFICIAL_URLS[dpid])
             parsed = OFFICIAL_PARSERS[dpid](html)
@@ -195,11 +237,22 @@ def main():
     updated = update_providers(old, merged)
     updated["updatedAt"] = datetime.now(timezone.utc).astimezone().strftime("%Y-%m-%d")
 
+    # 5) 汇率（USD->CNY），失败则沿用旧值
+    try:
+        rate = fetch_exchange_rate()
+        print(f"[rate]     USD->CNY = {rate}")
+    except Exception as e:
+        print(f"[rate]     获取失败({type(e).__name__})，沿用旧值")
+        rate = old.get("cnyRate")
+    if rate:
+        updated["cnyRate"] = rate
+
     if dry_run:
         print("\n===== DRY RUN：即将写入的概要 =====")
         for p in updated["providers"]:
             print(f"  {p['name']}: {len(p['models'])} 个模型")
         print(f"  updatedAt = {updated['updatedAt']}")
+        print(f"  cnyRate   = {updated.get('cnyRate')}")
         return
 
     write_data(updated)
@@ -247,7 +300,14 @@ def update_providers(old, merged):
             base = dict(old_provider)
             base.pop("models", None)
         else:
-            base = {"id": dpid, "name": _label, "short": _label.split()[-1], "color": "#888", "site": ""}
+            meta = PROVIDER_META.get(dpid, {})
+            base = {
+                "id": dpid,
+                "name": meta.get("name", _label),
+                "short": meta.get("short", _label.split()[-1]),
+                "color": meta.get("color", "#888"),
+                "site": meta.get("site", ""),
+            }
         base["models"] = models
         providers.append(base)
     return {"providers": providers}
@@ -262,7 +322,9 @@ def write_data(updated):
     blob = json.dumps(updated, ensure_ascii=False, indent=2)
     # 仅当价格有实质变化时才重写文件（避免每次提交产生无意义 diff）
     old = load_old_data()
-    if same_models(old.get("providers", []), updated.get("providers", [])) and old.get("updatedAt") == updated.get("updatedAt"):
+    if (same_models(old.get("providers", []), updated.get("providers", []))
+            and old.get("updatedAt") == updated.get("updatedAt")
+            and old.get("cnyRate") == updated.get("cnyRate")):
         print("数据无变化，跳过写入。")
         return
     with open(DATA_FILE, "w", encoding="utf-8") as f:
