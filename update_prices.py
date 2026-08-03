@@ -330,7 +330,23 @@ def write_data(updated):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         f.write("/* 由 update_prices.py 自动生成 —— 请勿手动编辑此文件。\n   价格单位：美元 / 每百万 tokens（US$ / MTok）。 */\n")
         f.write("window.PRICING_DATA = " + blob + ";\n")
+    bump_data_version(updated.get("updatedAt", ""))
     print(f"有变化，已写入 {DATA_FILE}，updatedAt = {updated.get('updatedAt')}")
+
+
+def bump_data_version(version):
+    """更新 index.html 里 data.js 的版本号，让浏览器重新拉取数据（避免缓存旧版）。"""
+    index_file = os.path.join(BASE_DIR, "index.html")
+    if not os.path.exists(index_file):
+        return
+    with open(index_file, "r", encoding="utf-8") as f:
+        html = f.read()
+    version = version.replace("-", "")  # 2026-08-03 -> 20260803
+    new_html = re.sub(r'data\.js\?v=[^"]*', "data.js?v=" + version, html)
+    if new_html != html:
+        with open(index_file, "w", encoding="utf-8") as f:
+            f.write(new_html)
+        print(f"已更新 index.html 的 data.js 版本号 -> v={version}")
 
 
 def same_models(a, b):
