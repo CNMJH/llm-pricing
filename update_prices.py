@@ -24,6 +24,7 @@
 依赖：仅 Python 标准库（urllib），无需 pip install。
 """
 import json
+import hashlib
 import os
 import re
 import sys
@@ -101,6 +102,28 @@ OFFICIAL_URLS = {
     "deepseek": "https://api-docs.deepseek.com/quick_start/pricing",
 }
 
+# 模型显示名覆盖（OpenRouter 自动生成的英文名不美观，这里给规范名）
+NAME_OVERRIDES = {
+    "glm-5.2": "GLM-5.2", "glm-5.1": "GLM-5.1", "glm-5": "GLM-5",
+    "glm-4.7": "GLM-4.7", "glm-4.7-flash": "GLM-4.7-Flash",
+    "glm-4.6": "GLM-4.6", "glm-4.5": "GLM-4.5", "glm-4.5-air": "GLM-4.5-Air",
+    "qwen3.7-max": "Qwen3.7-Max", "qwen3.7-plus": "Qwen3.7-Plus", "qwen3.7-flash": "Qwen3.7-Flash",
+    "qwen3.6-max-preview": "Qwen3.6-Max", "qwen3.6-plus": "Qwen3.6-Plus", "qwen3.6-flash": "Qwen3.6-Flash",
+    "qwen3-max": "Qwen3-Max", "qwen3-coder": "Qwen3-Coder", "qwen-plus": "Qwen-Plus",
+    "kimi-k3": "Kimi K3", "kimi-k2.7-code": "Kimi K2.7-Code", "kimi-k2.6": "Kimi K2.6",
+    "kimi-k2.5": "Kimi K2.5", "kimi-k2-thinking": "Kimi K2-Thinking", "kimi-k2": "Kimi K2",
+    "minimax-m3": "MiniMax M3", "minimax-m2.7": "MiniMax M2.7", "minimax-m2.5": "MiniMax M2.5",
+    "minimax-m2.1": "MiniMax M2.1", "minimax-m2": "MiniMax M2", "minimax-m1": "MiniMax M1",
+    "deepseek-v4-flash": "DeepSeek V4-Flash", "deepseek-v4-pro": "DeepSeek V4-Pro",
+}
+
+# 价格修正覆盖（官方价与 OpenRouter 不同时，以官方为准）
+# 例：OpenRouter 对 gpt-5.6-terra / gpt-5.6-luna 报官方价的一半，这里覆盖为官方价
+PRICE_OVERRIDES = {
+    "gpt-5.6-terra": (2.0, 12.0),
+    "gpt-5.6-luna": (0.2, 1.2),
+}
+
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 
 
@@ -115,6 +138,19 @@ def parse_float(s):
         return None
     m = re.search(r"[\d]+(?:\.\d+)?", str(s).replace(",", ""))
     return float(m.group(0)) if m else None
+
+
+def format_ctx(n):
+    """把 token 数格式化成 '1M' / '200K' 等展示形式（按 1024 取整）。"""
+    if not n:
+        return None
+    n = int(n)
+    if n >= 1_000_000:
+        return "1M"
+    k = round(n / 1024)
+    if k >= 1000:
+        return "1M"
+    return f"{k}K"
 
 
 def fetch_exchange_rate():
@@ -179,7 +215,7 @@ OFFICIAL_PARSERS = {
 
 # ---------- OpenRouter 兜底 ----------
 def fetch_openrouter():
-    """返回 {data.js厂商id: {api: (input_MTok, output_MTok)}}。OpenRouter 价格是每 token，需 ×1e6。"""
+    """返回 {data.js厂商id: {api: (input_MTok, output_MTok, ctx)}}。OpenRouter 价格是每 token，需 ×1e6。"""
     data = json.loads(fetch("https://openrouter.ai/api/v1/models", timeout=30))
     result = {}
     for model in data.get("data", []):
@@ -189,10 +225,11 @@ def fetch_openrouter():
         outp = parse_float(pricing.get("completion"))
         if inp is None or outp is None:
             continue
+        ctx = format_ctx(model.get("context_length"))
         for or_prefix, dpid, _label in PROVIDER_MAP:
             if mid.startswith(or_prefix + "/"):
                 api = mid.split("/", 1)[1]
-                result.setdefault(dpid, {})[api] = (round(inp * 1e6, 4), round(outp * 1e6, 4))
+                result.setdefault(dpid, {})[api] = (round(inp * 1e6, 4), round(outp * 1e6, 4), ctx)
                 break
     return result
 
@@ -224,13 +261,14 @@ def main():
             print(f"[official] {dpid:10s} -> 失败({type(e).__name__})，跳过")
             official[dpid] = {}
 
-    # 3) 合并：OpenRouter 优先，官方仅填补 OpenRouter 缺失的模型
+    # 3) 合并：OpenRouter 优先，官方仅填补 OpenRouter 缺失的模型（统一为 (in, out, ctx) 三元组）
     merged = {}
     for or_prefix, dpid, _label in PROVIDER_MAP:
         merged[dpid] = dict(authoritative.get(dpid) or {})
         for api, v in (official.get(dpid) or {}).items():
             if api not in merged[dpid]:
-                merged[dpid][api] = v
+                inp, outp = v[0], v[1]
+                merged[dpid][api] = (inp, outp, None)
 
     # 4) 读旧数据，合并写入
     old = load_old_data()
@@ -291,9 +329,17 @@ def update_providers(old, merged):
         for api, m in keep.items():
             price = merged[dpid].get(api)
             if price:
-                m["input"], m["output"] = round(price[0], 4), round(price[1], 4)
+                inp, outp, ctx = price
+                # 官方价修正覆盖（OpenRouter 与官方不一致时以官方为准）
+                if api in PRICE_OVERRIDES:
+                    inp, outp = PRICE_OVERRIDES[api]
+                m["input"], m["output"] = round(inp, 4), round(outp, 4)
+                if ctx:
+                    m["ctx"] = ctx
             elif m.get("input") is None:
                 continue  # 目标里新增但 OpenRouter 未收录，跳过
+            # 显示名修正（优先用规范名，其次保留旧名）
+            m["name"] = NAME_OVERRIDES.get(api, m.get("name") or pretty_name(api))
             models.append(m)
 
         if old_provider:
@@ -330,8 +376,10 @@ def write_data(updated):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         f.write("/* 由 update_prices.py 自动生成 —— 请勿手动编辑此文件。\n   价格单位：美元 / 每百万 tokens（US$ / MTok）。 */\n")
         f.write("window.PRICING_DATA = " + blob + ";\n")
-    bump_data_version(updated.get("updatedAt", ""))
-    print(f"有变化，已写入 {DATA_FILE}，updatedAt = {updated.get('updatedAt')}")
+    # 用数据内容哈希作为版本号，任何变化都会触发浏览器重新拉取
+    version = hashlib.md5(blob.encode("utf-8")).hexdigest()[:8]
+    bump_data_version(version)
+    print(f"有变化，已写入 {DATA_FILE}，updatedAt = {updated.get('updatedAt')}，v={version}")
 
 
 def bump_data_version(version):
@@ -341,7 +389,6 @@ def bump_data_version(version):
         return
     with open(index_file, "r", encoding="utf-8") as f:
         html = f.read()
-    version = version.replace("-", "")  # 2026-08-03 -> 20260803
     new_html = re.sub(r'data\.js\?v=[^"]*', "data.js?v=" + version, html)
     if new_html != html:
         with open(index_file, "w", encoding="utf-8") as f:
@@ -355,8 +402,8 @@ def same_models(a, b):
     for pa, pb in zip(a, b):
         if pa.get("id") != pb.get("id"):
             return False
-        pa_sig = [(m.get("api"), m.get("input"), m.get("output")) for m in pa.get("models", [])]
-        pb_sig = [(m.get("api"), m.get("input"), m.get("output")) for m in pb.get("models", [])]
+        pa_sig = [(m.get("api"), m.get("input"), m.get("output"), m.get("ctx")) for m in pa.get("models", [])]
+        pb_sig = [(m.get("api"), m.get("input"), m.get("output"), m.get("ctx")) for m in pb.get("models", [])]
         if pa_sig != pb_sig:
             return False
     return True

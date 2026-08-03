@@ -42,7 +42,7 @@ window.PRICING_DATA = {
           "api": "claude-haiku-4.5",
           "input": 1.0,
           "output": 5.0,
-          "ctx": "200K",
+          "ctx": "195K",
           "badge": "最快",
           "note": "速度最快，接近前沿的智能。"
         },
@@ -75,22 +75,22 @@ window.PRICING_DATA = {
           "api": "gpt-5.6-sol",
           "input": 5.0,
           "output": 30.0,
-          "ctx": "—",
+          "ctx": "1M",
           "badge": "新一代"
         },
         {
           "name": "GPT-5.6 Terra",
           "api": "gpt-5.6-terra",
-          "input": 1.0,
-          "output": 6.0,
-          "ctx": "—"
+          "input": 2.0,
+          "output": 12.0,
+          "ctx": "1M"
         },
         {
           "name": "GPT-5.6 Luna",
           "api": "gpt-5.6-luna",
-          "input": 0.1,
-          "output": 0.6,
-          "ctx": "—",
+          "input": 0.2,
+          "output": 1.2,
+          "ctx": "1M",
           "badge": "轻量"
         },
         {
@@ -98,7 +98,7 @@ window.PRICING_DATA = {
           "api": "gpt-5.5",
           "input": 5.0,
           "output": 30.0,
-          "ctx": "—",
+          "ctx": "1M",
           "badge": "旗舰"
         },
         {
@@ -106,7 +106,7 @@ window.PRICING_DATA = {
           "api": "gpt-5.5-pro",
           "input": 30.0,
           "output": 180.0,
-          "ctx": "—",
+          "ctx": "1M",
           "badge": "顶级",
           "flag": true
         },
@@ -115,21 +115,21 @@ window.PRICING_DATA = {
           "api": "gpt-5.4",
           "input": 2.5,
           "output": 15.0,
-          "ctx": "—"
+          "ctx": "1M"
         },
         {
           "name": "GPT-5.4 mini",
           "api": "gpt-5.4-mini",
           "input": 0.75,
           "output": 4.5,
-          "ctx": "—"
+          "ctx": "391K"
         },
         {
           "name": "GPT-5.4 nano",
           "api": "gpt-5.4-nano",
           "input": 0.2,
           "output": 1.25,
-          "ctx": "—",
+          "ctx": "391K",
           "badge": "轻量"
         },
         {
@@ -137,21 +137,21 @@ window.PRICING_DATA = {
           "api": "gpt-5.2",
           "input": 1.75,
           "output": 14.0,
-          "ctx": "—"
+          "ctx": "391K"
         },
         {
           "name": "GPT-5.1",
           "api": "gpt-5.1",
           "input": 1.25,
           "output": 10.0,
-          "ctx": "—"
+          "ctx": "391K"
         },
         {
           "name": "GPT-5",
           "api": "gpt-5",
           "input": 1.25,
           "output": 10.0,
-          "ctx": "—",
+          "ctx": "391K",
           "badge": "经典"
         },
         {
@@ -159,7 +159,7 @@ window.PRICING_DATA = {
           "api": "gpt-5-mini",
           "input": 0.25,
           "output": 2.0,
-          "ctx": "—",
+          "ctx": "391K",
           "badge": "轻量"
         },
         {
@@ -167,7 +167,7 @@ window.PRICING_DATA = {
           "api": "gpt-5-nano",
           "input": 0.05,
           "output": 0.4,
-          "ctx": "—",
+          "ctx": "391K",
           "badge": "最便宜"
         },
         {
@@ -175,7 +175,7 @@ window.PRICING_DATA = {
           "api": "gpt-5-pro",
           "input": 15.0,
           "output": 120.0,
-          "ctx": "—",
+          "ctx": "391K",
           "badge": "顶级",
           "flag": true
         },
@@ -198,21 +198,21 @@ window.PRICING_DATA = {
           "api": "gpt-4o",
           "input": 2.5,
           "output": 10.0,
-          "ctx": "128K"
+          "ctx": "125K"
         },
         {
           "name": "GPT-4o mini",
           "api": "gpt-4o-mini",
           "input": 0.15,
           "output": 0.6,
-          "ctx": "128K"
+          "ctx": "125K"
         },
         {
           "name": "o3",
           "api": "o3",
           "input": 2.0,
           "output": 8.0,
-          "ctx": "—",
+          "ctx": "195K",
           "badge": "推理"
         },
         {
@@ -220,7 +220,7 @@ window.PRICING_DATA = {
           "api": "o4-mini",
           "input": 1.1,
           "output": 4.4,
-          "ctx": "—",
+          "ctx": "195K",
           "badge": "推理"
         },
         {
@@ -228,7 +228,7 @@ window.PRICING_DATA = {
           "api": "o1",
           "input": 15.0,
           "output": 60.0,
-          "ctx": "—",
+          "ctx": "195K",
           "badge": "推理"
         }
       ]
@@ -346,51 +346,59 @@ window.PRICING_DATA = {
       "models": [
         {
           "api": "glm-5.2",
-          "name": "Glm 5.2",
+          "name": "GLM-5.2",
           "input": 0.7042,
-          "output": 2.2132
+          "output": 2.2132,
+          "ctx": "1M"
         },
         {
           "api": "glm-5.1",
-          "name": "Glm 5.1",
+          "name": "GLM-5.1",
           "input": 0.966,
-          "output": 3.036
+          "output": 3.036,
+          "ctx": "200K"
         },
         {
           "api": "glm-5",
-          "name": "Glm 5",
+          "name": "GLM-5",
           "input": 0.95,
-          "output": 2.55
+          "output": 2.55,
+          "ctx": "200K"
         },
         {
           "api": "glm-4.7",
-          "name": "Glm 4.7",
+          "name": "GLM-4.7",
           "input": 0.4,
-          "output": 1.75
+          "output": 1.75,
+          "ctx": "200K"
         },
         {
           "api": "glm-4.7-flash",
-          "name": "Glm 4.7 Flash",
+          "name": "GLM-4.7-Flash",
           "input": 0.06,
-          "output": 0.4
+          "output": 0.4,
+          "ctx": "198K"
         },
         {
           "api": "glm-4.6",
-          "name": "Glm 4.6",
+          "name": "GLM-4.6",
           "input": 0.5,
-          "output": 2.0
+          "output": 2.0,
+          "ctx": "200K"
         },
         {
           "api": "glm-4.5",
-          "name": "Glm 4.5",
+          "name": "GLM-4.5",
           "input": 0.6,
-          "output": 2.2
+          "output": 2.2,
+          "ctx": "128K"
         },
         {
           "api": "glm-4.5-air",
-          "name": "Glm 4.5 Air",
+          "name": "GLM-4.5-Air",
           "input": 0.13,
-          "output": 0.85
+          "output": 0.85,
+          "ctx": "128K"
         }
       ]
     },
@@ -403,57 +411,66 @@ window.PRICING_DATA = {
       "models": [
         {
           "api": "qwen3.7-max",
-          "name": "Qwen3.7 Max",
+          "name": "Qwen3.7-Max",
           "input": 1.475,
-          "output": 4.425
+          "output": 4.425,
+          "ctx": "1M"
         },
         {
           "api": "qwen3.7-plus",
-          "name": "Qwen3.7 Plus",
+          "name": "Qwen3.7-Plus",
           "input": 0.32,
-          "output": 1.28
+          "output": 1.28,
+          "ctx": "1M"
         },
         {
           "api": "qwen3.7-flash",
-          "name": "Qwen3.7 Flash",
+          "name": "Qwen3.7-Flash",
           "input": 0.03,
-          "output": 0.13
+          "output": 0.13,
+          "ctx": "1M"
         },
         {
           "api": "qwen3.6-max-preview",
-          "name": "Qwen3.6 Max Preview",
+          "name": "Qwen3.6-Max",
           "input": 1.027,
-          "output": 6.162
+          "output": 6.162,
+          "ctx": "256K"
         },
         {
           "api": "qwen3.6-plus",
-          "name": "Qwen3.6 Plus",
+          "name": "Qwen3.6-Plus",
           "input": 0.325,
-          "output": 1.95
+          "output": 1.95,
+          "ctx": "1M"
         },
         {
           "api": "qwen3.6-flash",
-          "name": "Qwen3.6 Flash",
+          "name": "Qwen3.6-Flash",
           "input": 0.1875,
-          "output": 1.125
+          "output": 1.125,
+          "ctx": "1M"
         },
         {
           "api": "qwen3-max",
-          "name": "Qwen3 Max",
+          "name": "Qwen3-Max",
           "input": 0.78,
-          "output": 3.9
+          "output": 3.9,
+          "ctx": "256K"
         },
         {
           "api": "qwen3-coder",
-          "name": "Qwen3 Coder",
+          "name": "Qwen3-Coder",
           "input": 0.3,
-          "output": 1.0
+          "output": 1.0,
+          "ctx": "256K"
         },
         {
           "api": "qwen-plus",
-          "name": "Qwen Plus",
+          "name": "Qwen-Plus",
           "input": 0.26,
-          "output": 0.78
+          "output": 0.78,
+          "ctx": "1M"
         }
       ]
     },
@@ -468,37 +485,43 @@ window.PRICING_DATA = {
           "api": "kimi-k3",
           "name": "Kimi K3",
           "input": 3.0,
-          "output": 15.0
+          "output": 15.0,
+          "ctx": "1M"
         },
         {
           "api": "kimi-k2.7-code",
-          "name": "Kimi K2.7 Code",
+          "name": "Kimi K2.7-Code",
           "input": 0.73,
-          "output": 3.5
+          "output": 3.5,
+          "ctx": "256K"
         },
         {
           "api": "kimi-k2.6",
           "name": "Kimi K2.6",
           "input": 0.6,
-          "output": 3.41
+          "output": 3.41,
+          "ctx": "256K"
         },
         {
           "api": "kimi-k2.5",
           "name": "Kimi K2.5",
           "input": 0.57,
-          "output": 2.85
+          "output": 2.85,
+          "ctx": "256K"
         },
         {
           "api": "kimi-k2-thinking",
-          "name": "Kimi K2 Thinking",
+          "name": "Kimi K2-Thinking",
           "input": 0.6,
-          "output": 2.5
+          "output": 2.5,
+          "ctx": "256K"
         },
         {
           "api": "kimi-k2",
           "name": "Kimi K2",
           "input": 0.57,
-          "output": 2.3
+          "output": 2.3,
+          "ctx": "128K"
         }
       ]
     },
@@ -511,39 +534,45 @@ window.PRICING_DATA = {
       "models": [
         {
           "api": "minimax-m3",
-          "name": "Minimax M3",
+          "name": "MiniMax M3",
           "input": 0.3,
-          "output": 1.2
+          "output": 1.2,
+          "ctx": "1M"
         },
         {
           "api": "minimax-m2.7",
-          "name": "Minimax M2.7",
+          "name": "MiniMax M2.7",
           "input": 0.25,
-          "output": 1.0
+          "output": 1.0,
+          "ctx": "200K"
         },
         {
           "api": "minimax-m2.5",
-          "name": "Minimax M2.5",
+          "name": "MiniMax M2.5",
           "input": 0.15,
-          "output": 0.9
+          "output": 0.9,
+          "ctx": "200K"
         },
         {
           "api": "minimax-m2.1",
-          "name": "Minimax M2.1",
+          "name": "MiniMax M2.1",
           "input": 0.3,
-          "output": 1.2
+          "output": 1.2,
+          "ctx": "200K"
         },
         {
           "api": "minimax-m2",
-          "name": "Minimax M2",
+          "name": "MiniMax M2",
           "input": 0.255,
-          "output": 1.02
+          "output": 1.02,
+          "ctx": "200K"
         },
         {
           "api": "minimax-m1",
-          "name": "Minimax M1",
+          "name": "MiniMax M1",
           "input": 0.55,
-          "output": 2.2
+          "output": 2.2,
+          "ctx": "1M"
         }
       ]
     }
