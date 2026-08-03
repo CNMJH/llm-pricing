@@ -1,0 +1,38 @@
+name: 每日更新价格
+
+on:
+  schedule:
+    # 每天 10:00（UTC）。注意：GitHub Actions 的 cron 使用 UTC，不是本地时间。
+    # 若需要本地上午 10 点，请把 "0 10" 换算成本地时区对应的 UTC 时间（例如 UTC+8 应改为 "0 2"）。
+    - cron: "0 10 * * *"
+  workflow_dispatch: {}   # 允许在 Actions 页面手动触发
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 运行价格更新脚本
+        run: python update_prices.py
+
+      - name: 提交变更（如有）
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data.js
+            git commit -m "chore: 自动更新 API 价格数据 [skip ci]"
+            git push
+          else
+            echo "价格无变化，无需提交。"
+          fi
