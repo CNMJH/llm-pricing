@@ -86,7 +86,6 @@ TARGET_IDS = {
     ],
     "kimi": [
         "kimi-k3", "kimi-k2.7-code", "kimi-k2.6", "kimi-k2.5",
-        "kimi-k2-thinking", "kimi-k2",
     ],
     "minimax": [
         "minimax-m3", "minimax-m2.7", "minimax-m2.5", "minimax-m2.1",
@@ -122,6 +121,24 @@ NAME_OVERRIDES = {
 PRICE_OVERRIDES = {
     "gpt-5.6-terra": (2.0, 12.0),
     "gpt-5.6-luna": (0.2, 1.2),
+}
+
+# 人民币官方直连价（已核实官方定价页，单位：元 / 每百万 tokens）
+# 这批模型的价格以人民币计价，页面直接显示，不再按汇率换算
+RMB_OFFICIAL_OVERRIDES = {
+    "kimi-k3": (20.0, 100.0),
+    "kimi-k2.7-code": (6.5, 27.0),
+    "kimi-k2.6": (6.5, 27.0),
+    "kimi-k2.5": (4.0, 21.0),
+}
+
+# 厂商级附加信息：currency 表示价格计价币种（USD=美元，CNY=人民币直连价）
+# note 是给"暂用 OpenRouter 国际价"的厂商加的提示
+PROVIDER_FLAGS = {
+    "kimi": {"currency": "CNY"},
+    "qwen": {"currency": "USD", "unofficial": True, "note": "⚠ 价格为 OpenRouter 国际代理价，非官方直连价，仅供参考。"},
+    "zhipu": {"currency": "USD", "unofficial": True, "note": "⚠ 价格为 OpenRouter 国际代理价，非官方直连价，仅供参考。"},
+    "minimax": {"currency": "USD", "unofficial": True, "note": "⚠ 价格为 OpenRouter 国际代理价，非官方直连价，仅供参考。"},
 }
 
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
@@ -317,10 +334,11 @@ def update_providers(old, merged):
         old_models = (old_provider or {}).get("models", [])
         targets = TARGET_IDS.get(dpid) or []
 
-        # 保留的模型集合 = 旧数据已有 + 目标列表里新增的
+        # 保留的模型集合 = 目标列表里的模型（旧数据里不在目标列表的视为已下线，丢弃）
         keep = {}
         for m in old_models:
-            keep[m.get("api")] = m
+            if not targets or m.get("api") in targets:
+                keep[m.get("api")] = m
         for t in targets:
             if t not in keep:
                 keep[t] = {"api": t, "name": pretty_name(t)}
@@ -333,6 +351,9 @@ def update_providers(old, merged):
                 # 官方价修正覆盖（OpenRouter 与官方不一致时以官方为准）
                 if api in PRICE_OVERRIDES:
                     inp, outp = PRICE_OVERRIDES[api]
+                # 人民币官方直连价覆盖（直接以元计价）
+                if api in RMB_OFFICIAL_OVERRIDES:
+                    inp, outp = RMB_OFFICIAL_OVERRIDES[api]
                 m["input"], m["output"] = round(inp, 4), round(outp, 4)
                 if ctx:
                     m["ctx"] = ctx
@@ -354,6 +375,14 @@ def update_providers(old, merged):
                 "color": meta.get("color", "#888"),
                 "site": meta.get("site", ""),
             }
+        # 应用厂商级附加信息（计价币种、非官方提示）
+        flags = PROVIDER_FLAGS.get(dpid, {})
+        if flags.get("currency"):
+            base["currency"] = flags["currency"]
+        if flags.get("unofficial"):
+            base["unofficial"] = True
+        if flags.get("note"):
+            base["note"] = flags["note"]
         base["models"] = models
         providers.append(base)
     return {"providers": providers}
@@ -401,6 +430,8 @@ def same_models(a, b):
         return False
     for pa, pb in zip(a, b):
         if pa.get("id") != pb.get("id"):
+            return False
+        if pa.get("unofficial") != pb.get("unofficial"):
             return False
         pa_sig = [(m.get("api"), m.get("input"), m.get("output"), m.get("ctx")) for m in pa.get("models", [])]
         pb_sig = [(m.get("api"), m.get("input"), m.get("output"), m.get("ctx")) for m in pb.get("models", [])]

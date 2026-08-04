@@ -343,12 +343,15 @@ window.PRICING_DATA = {
       "short": "GLM",
       "color": "#26a5e4",
       "site": "https://open.bigmodel.cn/pricing",
+      "currency": "USD",
+      "note": "⚠ 价格为 OpenRouter 国际代理价，非官方直连价，仅供参考。",
+      "unofficial": true,
       "models": [
         {
           "api": "glm-5.2",
           "name": "GLM-5.2",
-          "input": 0.7042,
-          "output": 2.2132,
+          "input": 0.76,
+          "output": 2.42,
           "ctx": "1M"
         },
         {
@@ -408,6 +411,9 @@ window.PRICING_DATA = {
       "short": "Qwen",
       "color": "#ff6a00",
       "site": "https://www.alibabacloud.com/help/en/model-studio/models",
+      "currency": "USD",
+      "note": "⚠ 价格为 OpenRouter 国际代理价，非官方直连价，仅供参考。",
+      "unofficial": true,
       "models": [
         {
           "api": "qwen3.7-max",
@@ -480,48 +486,35 @@ window.PRICING_DATA = {
       "short": "Kimi",
       "color": "#e53835",
       "site": "https://platform.moonshot.cn/docs/pricing",
+      "currency": "CNY",
       "models": [
         {
           "api": "kimi-k3",
           "name": "Kimi K3",
-          "input": 3.0,
-          "output": 15.0,
+          "input": 20.0,
+          "output": 100.0,
           "ctx": "1M"
         },
         {
           "api": "kimi-k2.7-code",
           "name": "Kimi K2.7-Code",
-          "input": 0.73,
-          "output": 3.5,
+          "input": 6.5,
+          "output": 27.0,
           "ctx": "256K"
         },
         {
           "api": "kimi-k2.6",
           "name": "Kimi K2.6",
-          "input": 0.6,
-          "output": 3.41,
+          "input": 6.5,
+          "output": 27.0,
           "ctx": "256K"
         },
         {
           "api": "kimi-k2.5",
           "name": "Kimi K2.5",
-          "input": 0.57,
-          "output": 2.85,
+          "input": 4.0,
+          "output": 21.0,
           "ctx": "256K"
-        },
-        {
-          "api": "kimi-k2-thinking",
-          "name": "Kimi K2-Thinking",
-          "input": 0.6,
-          "output": 2.5,
-          "ctx": "256K"
-        },
-        {
-          "api": "kimi-k2",
-          "name": "Kimi K2",
-          "input": 0.57,
-          "output": 2.3,
-          "ctx": "128K"
         }
       ]
     },
@@ -531,6 +524,9 @@ window.PRICING_DATA = {
       "short": "MiniMax",
       "color": "#7c3aed",
       "site": "https://www.minimax.io/platform/pricing",
+      "currency": "USD",
+      "note": "⚠ 价格为 OpenRouter 国际代理价，非官方直连价，仅供参考。",
+      "unofficial": true,
       "models": [
         {
           "api": "minimax-m3",
@@ -577,6 +573,6 @@ window.PRICING_DATA = {
       ]
     }
   ],
-  "updatedAt": "2026-08-03",
-  "cnyRate": 6.7598
+  "updatedAt": "2026-08-04",
+  "cnyRate": 6.7659
 };

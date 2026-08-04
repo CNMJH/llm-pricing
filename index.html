@@ -176,6 +176,7 @@
   .t-badge.flag { background: rgba(248,113,113,.14); color: var(--red); }
   .t-badge.green { background: rgba(52,211,153,.14); color: var(--green); }
   .t-badge.hidden { background: rgba(148,163,184,.14); color: var(--text-dim); }
+  .t-badge.t-unofficial { background: rgba(248,146,30,.16); color: #f59e0b; }
   .btn-hide-cell { font-size: 11px; color: var(--text-faint); background: none; border: 1px solid var(--border); padding: 3px 9px; border-radius: 6px; cursor: pointer; }
   .btn-hide-cell:hover { color: var(--red); border-color: var(--red); }
   .btn-hide-cell.restore { color: var(--green); }
@@ -277,7 +278,7 @@
   </footer>
 </div>
 
-<script src="data.js?v=3c8f28f4"></script>
+<script src="data.js?v=f0b7bcd9"></script>
 <script>
 const PROVIDERS = (window.PRICING_DATA && window.PRICING_DATA.providers) || [];
 const RATE = (window.PRICING_DATA && window.PRICING_DATA.cnyRate) || 7.2;
@@ -314,14 +315,21 @@ function fmtUSD(v) {
   if (v === undefined || v === null) return "—";
   return "$" + v.toLocaleString("en-US", { minimumFractionDigits: v < 1 ? 2 : v < 10 ? 2 : 0, maximumFractionDigits: 4 });
 }
-function fmtCNY(usd) {
-  if (usd === undefined || usd === null) return "—";
-  const c = usd * RATE;
-  return "¥" + c.toLocaleString("zh-CN", { minimumFractionDigits: c < 1 ? 2 : 0, maximumFractionDigits: 2 });
+// 以下两个函数接收"人民币"金额（已经是 CNY），只负责格式化
+function fmtCNY(cny) {
+  if (cny === undefined || cny === null) return "—";
+  return "¥" + cny.toLocaleString("zh-CN", { minimumFractionDigits: cny < 1 ? 2 : 0, maximumFractionDigits: 2 });
 }
-function fmtCNYexact(usd) {
-  if (usd === undefined || usd === null) return "—";
-  return "¥" + (usd * RATE).toLocaleString("zh-CN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+function fmtCNYexact(cny) {
+  if (cny === undefined || cny === null) return "—";
+  return "¥" + cny.toLocaleString("zh-CN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+// 币种换算：USD 计价的厂商按汇率换算成人民币；CNY 计价的厂商（官方直连价）直接用人民币
+function toCNY(provider, price) {
+  return provider.currency === "CNY" ? price : price * RATE;
+}
+function toUSD(provider, price) {
+  return provider.currency === "CNY" ? price / RATE : price;
 }
 
 function buildChips() {
@@ -351,8 +359,8 @@ function filteredModels() {
       out.push({ provider: p, model: m, hidden });
     });
   });
-  if (currentSort === "price_in") out.sort((a, b) => a.model.input - b.model.input);
-  else if (currentSort === "price_out") out.sort((a, b) => b.model.output - a.model.output);
+  if (currentSort === "price_in") out.sort((a, b) => toCNY(a.provider, a.model.input) - toCNY(b.provider, b.model.input));
+  else if (currentSort === "price_out") out.sort((a, b) => toCNY(b.provider, b.model.output) - toCNY(a.provider, a.model.output));
   return out;
 }
 
@@ -373,13 +381,13 @@ function card(provider, model, hidden) {
     <div class="prices">
       <div class="price-box">
         <div class="price-label">输入</div>
-        <div class="price-value price-in">${fmtCNY(model.input)} <small>/MTok</small></div>
-        <div class="price-usd">${fmtUSD(model.input)}</div>
+        <div class="price-value price-in">${fmtCNY(toCNY(provider, model.input))} <small>/MTok</small></div>
+        <div class="price-usd">${fmtUSD(toUSD(provider, model.input))}</div>
       </div>
       <div class="price-box">
         <div class="price-label">输出</div>
-        <div class="price-value price-out">${fmtCNY(model.output)} <small>/MTok</small></div>
-        <div class="price-usd">${fmtUSD(model.output)}</div>
+        <div class="price-value price-out">${fmtCNY(toCNY(provider, model.output))} <small>/MTok</small></div>
+        <div class="price-usd">${fmtUSD(toUSD(provider, model.output))}</div>
       </div>
     </div>
     <div class="meta">
@@ -405,7 +413,7 @@ function renderCard(list) {
       section.innerHTML = `
         <div class="provider-head">
           <div class="provider-logo" style="background:${p.color}">${p.short.slice(0,1)}</div>
-          <span class="provider-name">${p.name}</span>
+          <span class="provider-name">${p.name}</span>${p.unofficial ? ' <span class="t-badge t-unofficial">非官方</span>' : ''}
           <a class="provider-site" href="${p.site}" target="_blank" rel="noopener">官方定价 ↗</a>
         </div>
         ${p.note ? `<p class="note" style="margin:0 0 12px">${p.note}</p>` : ""}
@@ -432,8 +440,8 @@ function sortTable(list) {
     switch (key) {
       case "provider": return x.provider.name;
       case "model": return x.model.name;
-      case "input": return x.model.input;
-      case "output": return x.model.output;
+      case "input": return toCNY(x.provider, x.model.input);
+      case "output": return toCNY(x.provider, x.model.output);
       case "ctx": return x.model.ctx === "—" ? 0 : parseInt(x.model.ctx) || 0;
       default: return x.provider.name;
     }
@@ -467,12 +475,12 @@ function renderTable(list) {
     const tr = document.createElement("tr");
     tr.className = hidden ? "hidden-model" : "";
     tr.innerHTML = `
-      <td><span class="t-provider"><span class="dot" style="background:${p.color}"></span>${p.name}</span></td>
+      <td><span class="t-provider"><span class="dot" style="background:${p.color}"></span>${p.name}${p.unofficial ? ' <span class="t-badge t-unofficial">非官方</span>' : ''}</span></td>
       <td><span class="t-model-name">${m.name}</span>${badgeText ? ` <span class="t-badge${badgeCls}">${badgeText}</span>` : ""}</td>
       <td class="t-api">${m.api}</td>
       <td>${m.ctx && m.ctx !== "—" ? m.ctx : "—"}</td>
-      <td class="t-price t-input">${fmtCNYexact(m.input)}<br><span class="usd">${fmtUSD(m.input)}</span></td>
-      <td class="t-price t-output">${fmtCNYexact(m.output)}<br><span class="usd">${fmtUSD(m.output)}</span></td>
+      <td class="t-price t-input">${fmtCNYexact(toCNY(p, m.input))}<br><span class="usd">${fmtUSD(toUSD(p, m.input))}</span></td>
+      <td class="t-price t-output">${fmtCNYexact(toCNY(p, m.output))}<br><span class="usd">${fmtUSD(toUSD(p, m.output))}</span></td>
       <td class="t-note">${m.note || ""}</td>
       <td><button class="btn-hide-cell${hidden ? " restore" : ""}">${hidden ? "恢复" : "隐藏"}</button></td>`;
     tr.querySelector(".btn-hide-cell").onclick = () => { toggleHidden(p, m); render(); };
@@ -544,7 +552,7 @@ function buildCalcOptions() {
     p.models.forEach(m => {
       if (isHidden(p, m)) return;   // 隐藏的模型不出现在估算器里
       const opt = document.createElement("option");
-      opt.value = JSON.stringify({ in: m.input, out: m.output });
+      opt.value = JSON.stringify({ pid: p.id, in: m.input, out: m.output });
       opt.textContent = `${p.name} · ${m.name}`;
       calcModel.appendChild(opt);
     });
@@ -552,12 +560,13 @@ function buildCalcOptions() {
 }
 function updateCalc() {
   const d = JSON.parse(calcModel.value);
+  const provider = PROVIDERS.find(p => p.id === d.pid);
   const inM = parseFloat(calcIn.value) || 0;
   const outM = parseFloat(calcOut.value) || 0;
-  const usd = d.in * inM + d.out * outM;
-  calcTotal.textContent = fmtCNYexact(usd);
-  calcDetail.innerHTML = `输入 ${inM}M × <b>¥${fmtCNYexact(d.in).slice(1)}</b> + 输出 ${outM}M × <b>¥${fmtCNYexact(d.out).slice(1)}</b>`;
-  calcUsd.textContent = `≈ ${fmtUSD(usd)}（汇率 USD 1 = ¥${RATE.toFixed(2)}）`;
+  const cny = toCNY(provider, d.in) * inM + toCNY(provider, d.out) * outM;
+  calcTotal.textContent = fmtCNYexact(cny);
+  calcDetail.innerHTML = `输入 ${inM}M × <b>${fmtCNYexact(toCNY(provider, d.in))}</b> + 输出 ${outM}M × <b>${fmtCNYexact(toCNY(provider, d.out))}</b>`;
+  calcUsd.textContent = `≈ ${fmtUSD(cny / RATE)}（汇率 USD 1 = ¥${RATE.toFixed(2)}）`;
 }
 [calcModel, calcIn, calcOut].forEach(el => el.addEventListener("input", updateCalc));
 
