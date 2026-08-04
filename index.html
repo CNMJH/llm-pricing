@@ -6,20 +6,33 @@
 <title>主流大模型 API 价格速查</title>
 <style>
   :root {
-    --bg: #0f1117;
-    --bg-soft: #171a23;
-    --card: #1b1f2b;
-    --card-hover: #202636;
-    --border: #2a2f40;
-    --text: #e8eaf0;
-    --text-dim: #9aa1b5;
-    --text-faint: #6b7287;
-    --accent: #6d8bff;
-    --accent-soft: rgba(109,139,255,.14);
-    --green: #34d399;
-    --red: #f87171;
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --surface-2: #f4f6fa;
+    --border: #e5e8ef;
+    --border-strong: #d1d6e0;
+    --text: #0f172a;
+    --text-2: #475569;
+    --text-dim: #64748b;
+    --text-faint: #94a3b8;
+    --accent: #4f6ef7;
+    --accent-strong: #3b5bdb;
+    --accent-soft: rgba(79,110,247,.10);
+    --green: #0ea371;
+    --green-soft: rgba(14,163,113,.12);
+    --red: #e11d48;
+    --red-soft: rgba(225,29,72,.10);
+    --amber: #d97706;
+    --amber-soft: rgba(217,119,6,.12);
+    --blue: #2563eb;
+    --blue-soft: rgba(37,99,235,.12);
+    --teal: #0d9488;
+    --teal-soft: rgba(13,148,136,.12);
+    --orange: #f59e0b;
+    --orange-soft: rgba(245,158,11,.14);
     --radius: 14px;
-    --shadow: 0 8px 30px rgba(0,0,0,.35);
+    --shadow: 0 1px 2px rgba(15,23,42,.04), 0 4px 14px rgba(15,23,42,.05);
+    --shadow-hover: 0 8px 28px rgba(15,23,42,.10);
     --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Roboto, sans-serif;
     --mono: "SF Mono", "JetBrains Mono", Consolas, "Courier New", monospace;
   }
@@ -27,65 +40,71 @@
   html { scroll-behavior: smooth; }
   body {
     font-family: var(--font);
-    background: radial-gradient(1200px 600px at 80% -10%, var(--accent-soft), transparent 60%),
-                radial-gradient(900px 500px at 0% 0%, rgba(52,211,153,.06), transparent 55%),
-                var(--bg);
+    background:
+      radial-gradient(1100px 500px at 85% -10%, rgba(79,110,247,.08), transparent 60%),
+      radial-gradient(900px 480px at -5% 0%, rgba(14,163,113,.05), transparent 55%),
+      var(--bg);
     color: var(--text);
     min-height: 100vh;
     line-height: 1.55;
   }
   .wrap { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
   /* Header */
-  header { padding: 44px 0 8px; }
-  .brand { display: flex; align-items: center; gap: 12px; }
+  header { padding: 48px 0 10px; }
+  .brand { display: flex; align-items: center; gap: 14px; }
   .logo {
-    width: 40px; height: 40px; border-radius: 11px;
-    background: linear-gradient(135deg, var(--accent), #9b6dff);
+    width: 44px; height: 44px; border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent), #8b5cf6);
     display: grid; place-items: center; font-size: 20px; font-weight: 800; color: #fff;
-    box-shadow: 0 4px 16px rgba(109,139,255,.4);
+    box-shadow: 0 6px 18px rgba(79,110,247,.35);
+    letter-spacing: .5px;
   }
-  h1 { font-size: clamp(22px, 4vw, 30px); font-weight: 800; letter-spacing: .3px; }
-  .subtitle { color: var(--text-dim); margin-top: 10px; font-size: 15px; }
-  .badges { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  h1 { font-size: clamp(22px, 4vw, 30px); font-weight: 800; letter-spacing: .3px; color: var(--text); }
+  .subtitle { color: var(--text-2); margin-top: 10px; font-size: 15px; }
+  .badges { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
   .updated {
     display: inline-flex; align-items: center; gap: 7px;
     padding: 6px 12px; border-radius: 999px;
-    background: var(--accent-soft); color: var(--accent);
+    background: var(--accent-soft); color: var(--accent-strong);
     font-size: 13px; font-weight: 600;
   }
-  .updated::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px rgba(52,211,153,.2); }
+  .updated::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px rgba(14,163,113,.18); }
   .rate-badge {
     display: inline-flex; align-items: center; gap: 7px;
     padding: 6px 12px; border-radius: 999px;
-    background: rgba(52,211,153,.1); color: var(--green);
+    background: var(--green-soft); color: var(--green);
     font-size: 13px; font-weight: 600;
   }
 
   /* Controls */
-  .controls { position: sticky; top: 0; z-index: 20; padding: 14px 0; background: linear-gradient(var(--bg) 70%, transparent); }
+  .controls { position: sticky; top: 0; z-index: 20; padding: 14px 0; background: rgba(245,247,250,.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
   .controls-bar { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
   #search {
     flex: 1; min-width: 180px; padding: 11px 16px;
     border-radius: 10px; border: 1px solid var(--border);
-    background: var(--card); color: var(--text); font-size: 14px;
+    background: var(--surface); color: var(--text); font-size: 14px;
     outline: none; transition: border-color .15s, box-shadow .15s;
   }
   #search:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
   #search::placeholder { color: var(--text-faint); }
   .chips { display: flex; gap: 8px; flex-wrap: wrap; }
   .chip {
-    padding: 8px 12px; border-radius: 9px; border: 1px solid var(--border);
-    background: var(--card); color: var(--text-dim); font-size: 13px; font-weight: 600;
+    padding: 8px 13px; border-radius: 9px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text-2); font-size: 13px; font-weight: 600;
     cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 6px;
   }
-  .chip:hover { border-color: var(--accent); color: var(--text); }
-  .chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .chip:hover { border-color: var(--accent); color: var(--text); transform: translateY(-1px); }
+  .chip.active { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(79,110,247,.3); }
   .chip .dot { width: 8px; height: 8px; border-radius: 50%; }
   .chip .count { font-size: 11px; opacity: .7; font-weight: 700; }
 
   /* View toggle */
-  .view-toggle { display: flex; border: 1px solid var(--border); border-radius: 9px; overflow: hidden; background: var(--card); }
+  .view-toggle { display: flex; border: 1px solid var(--border); border-radius: 9px; overflow: hidden; background: var(--surface); }
   .view-toggle button {
     padding: 9px 16px; border: none; background: transparent; color: var(--text-dim);
     font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s;
@@ -96,7 +115,7 @@
   /* Sort row */
   .sort-row { display: flex; align-items: center; gap: 10px; margin: 10px 0 0; font-size: 13px; color: var(--text-dim); flex-wrap: wrap; }
   .sort-row button {
-    background: none; border: 1px solid var(--border); color: var(--text-dim);
+    background: var(--surface); border: 1px solid var(--border); color: var(--text-dim);
     padding: 5px 10px; border-radius: 8px; font-size: 12px; cursor: pointer; transition: all .15s;
   }
   .sort-row button:hover, .sort-row button.active { border-color: var(--accent); color: var(--accent); }
@@ -106,46 +125,54 @@
   .btn-hidden.active { background: var(--red); color: #fff !important; border-color: var(--red) !important; }
 
   /* Provider sections (card) */
-  .provider { margin: 30px 0; }
-  .provider-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .provider { margin: 32px 0; }
+  .provider-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
   .provider-logo {
-    width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center;
+    width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center;
     font-size: 18px; font-weight: 800; color: #fff; flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(15,23,42,.12);
   }
-  .provider-name { font-size: 19px; font-weight: 800; }
+  .provider-name { font-size: 19px; font-weight: 800; color: var(--text); }
   .provider-site { font-size: 12px; color: var(--text-faint); text-decoration: none; margin-left: 4px; }
   .provider-site:hover { color: var(--accent); }
 
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
   .card {
-    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 16px 16px 14px; box-shadow: var(--shadow); transition: transform .15s, border-color .15s, background .15s;
-    display: flex; flex-direction: column; gap: 10px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 18px 18px 16px; box-shadow: var(--shadow);
+    transition: transform .18s, border-color .18s, box-shadow .18s, background .18s;
+    display: flex; flex-direction: column; gap: 12px;
+    animation: fadeUp .4s ease both;
   }
-  .card:hover { transform: translateY(-3px); border-color: var(--accent); background: var(--card-hover); }
+  .card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: var(--shadow-hover); }
   .card.hidden-model { opacity: .55; border-style: dashed; }
   .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
-  .model-name { font-size: 16px; font-weight: 800; letter-spacing: .2px; }
+  .model-name { font-size: 16px; font-weight: 800; letter-spacing: .2px; color: var(--text); }
   .model-badge {
-    font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 700; white-space: nowrap;
-    background: var(--accent-soft); color: var(--accent);
+    font-size: 11px; padding: 3px 9px; border-radius: 6px; font-weight: 700; white-space: nowrap;
+    background: var(--accent-soft); color: var(--accent-strong);
   }
-  .model-badge.flag { background: rgba(248,113,113,.14); color: var(--red); }
-  .model-badge.green { background: rgba(52,211,153,.14); color: var(--green); }
-  .model-badge.hidden { background: rgba(148,163,184,.14); color: var(--text-dim); }
+  .model-badge.flag { background: var(--red-soft); color: var(--red); }
+  .model-badge.green { background: var(--green-soft); color: var(--green); }
+  .model-badge.brand { background: var(--accent-soft); color: var(--accent-strong); }
+  .model-badge.amber { background: var(--amber-soft); color: var(--amber); }
+  .model-badge.blue { background: var(--blue-soft); color: var(--blue); }
+  .model-badge.teal { background: var(--teal-soft); color: var(--teal); }
+  .model-badge.neutral { background: rgba(100,116,139,.14); color: var(--text-dim); }
+  .model-badge.hidden { background: rgba(100,116,139,.14); color: var(--text-dim); }
   .api-id { font-family: var(--mono); font-size: 11.5px; color: var(--text-faint); word-break: break-all; }
-  .prices { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .price-box { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; }
+  .prices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .price-box { background: var(--surface-2); border: 1px solid var(--border); border-radius: 11px; padding: 12px 14px; }
   .price-label {
     font-size: 11px; color: var(--text-faint); font-weight: 700; letter-spacing: .5px;
     display: flex; align-items: center; justify-content: space-between;
   }
   .price-label .tag { font-size: 10px; color: var(--text-faint); font-weight: 500; }
-  .price-value { font-family: var(--mono); font-size: 23px; font-weight: 800; margin-top: 4px; line-height: 1.1; color: var(--text); }
-  .price-unit { font-family: var(--mono); font-size: 11px; color: var(--text-faint); margin-top: 5px; }
+  .price-value { font-family: var(--mono); font-size: 25px; font-weight: 800; margin-top: 5px; line-height: 1.1; color: var(--text); font-variant-numeric: tabular-nums; }
+  .price-unit { font-family: var(--mono); font-size: 11px; color: var(--text-faint); margin-top: 6px; }
   .price-unit .usd { color: var(--green); font-weight: 600; }
   .meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-  .meta-tag { font-size: 11px; color: var(--text-dim); background: var(--bg-soft); border: 1px solid var(--border); padding: 3px 8px; border-radius: 6px; }
+  .meta-tag { font-size: 11px; color: var(--text-2); background: var(--surface-2); border: 1px solid var(--border); padding: 3px 8px; border-radius: 6px; }
   .btn-hide {
     margin-left: auto; font-size: 11px; color: var(--text-faint); background: none; border: 1px solid var(--border);
     padding: 3px 9px; border-radius: 6px; cursor: pointer; transition: all .15s;
@@ -156,50 +183,59 @@
   .note { font-size: 12px; color: var(--text-faint); line-height: 1.5; }
 
   /* Table view */
-  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); box-shadow: var(--shadow); }
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
   table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 880px; }
   thead th {
-    text-align: left; padding: 12px 14px; font-size: 12px; font-weight: 700; color: var(--text-dim);
+    text-align: left; padding: 13px 14px; font-size: 12px; font-weight: 700; color: var(--text-dim);
     border-bottom: 1px solid var(--border); white-space: nowrap; cursor: pointer; user-select: none;
-    background: var(--bg-soft);
+    background: var(--surface-2);
   }
   thead th:hover { color: var(--accent); }
   thead th .arrow { font-size: 10px; margin-left: 3px; opacity: .6; }
-  tbody td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tbody td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
   tbody tr:last-child td { border-bottom: none; }
-  tbody tr:hover { background: var(--card-hover); }
-  tbody tr:nth-child(even) { background: rgba(255,255,255,.02); }
+  tbody tr:hover { background: var(--surface-2); }
+  tbody tr:nth-child(even) { background: rgba(15,23,42,.02); }
   tbody tr.hidden-model { opacity: .5; }
+  tbody tr { animation: fadeUp .3s ease both; }
   .t-provider { display: flex; align-items: center; gap: 8px; white-space: nowrap; font-weight: 600; }
   .t-provider .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-  .t-model-name { font-weight: 700; }
+  .t-model-name { font-weight: 700; color: var(--text); }
   .t-api { font-family: var(--mono); font-size: 11.5px; color: var(--text-faint); }
-  .t-price { font-family: var(--mono); font-weight: 700; white-space: nowrap; font-size: 15px; }
+  .t-price { font-family: var(--mono); font-weight: 700; white-space: nowrap; font-size: 15px; color: var(--text); font-variant-numeric: tabular-nums; }
   .t-price .usd { font-size: 11px; color: var(--text-faint); font-weight: 500; margin-left: 5px; }
   .t-note { color: var(--text-faint); font-size: 12px; max-width: 240px; }
-  .t-badge { font-size: 10.5px; padding: 2px 7px; border-radius: 5px; font-weight: 700; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
-  .t-badge.flag { background: rgba(248,113,113,.14); color: var(--red); }
-  .t-badge.green { background: rgba(52,211,153,.14); color: var(--green); }
-  .t-badge.hidden { background: rgba(148,163,184,.14); color: var(--text-dim); }
-  .t-badge.t-unofficial { background: rgba(248,146,30,.16); color: #f59e0b; }
+  .t-badge {
+    font-size: 10.5px; padding: 2px 7px; border-radius: 5px; font-weight: 700; white-space: nowrap;
+    background: var(--accent-soft); color: var(--accent-strong);
+  }
+  .t-badge.flag { background: var(--red-soft); color: var(--red); }
+  .t-badge.green { background: var(--green-soft); color: var(--green); }
+  .t-badge.brand { background: var(--accent-soft); color: var(--accent-strong); }
+  .t-badge.amber { background: var(--amber-soft); color: var(--amber); }
+  .t-badge.blue { background: var(--blue-soft); color: var(--blue); }
+  .t-badge.teal { background: var(--teal-soft); color: var(--teal); }
+  .t-badge.neutral { background: rgba(100,116,139,.14); color: var(--text-dim); }
+  .t-badge.hidden { background: rgba(100,116,139,.14); color: var(--text-dim); }
+  .t-badge.t-unofficial { background: var(--orange-soft); color: var(--orange); }
   .btn-hide-cell { font-size: 11px; color: var(--text-faint); background: none; border: 1px solid var(--border); padding: 3px 9px; border-radius: 6px; cursor: pointer; }
   .btn-hide-cell:hover { color: var(--red); border-color: var(--red); }
   .btn-hide-cell.restore { color: var(--green); }
   .btn-hide-cell.restore:hover { border-color: var(--green); }
 
   /* Calculator */
-  .calc { margin: 34px 0; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
-  .calc h2 { font-size: 18px; margin-bottom: 4px; }
+  .calc { margin: 34px 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
+  .calc h2 { font-size: 18px; margin-bottom: 4px; color: var(--text); }
   .calc .desc { font-size: 13px; color: var(--text-dim); margin-bottom: 16px; }
   .calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
   .calc-field label { display: block; font-size: 12px; color: var(--text-dim); margin-bottom: 6px; font-weight: 600; }
   .calc-field select, .calc-field input {
     width: 100%; padding: 10px 12px; border-radius: 9px; border: 1px solid var(--border);
-    background: var(--bg-soft); color: var(--text); font-size: 14px; outline: none;
+    background: var(--surface-2); color: var(--text); font-size: 14px; outline: none;
   }
-  .calc-field select:focus, .calc-field input:focus { border-color: var(--accent); }
-  .calc-result { margin-top: 18px; padding: 16px; border-radius: 10px; background: var(--bg-soft); border: 1px solid var(--border); }
-  .calc-result .big { font-size: 26px; font-weight: 800; font-family: var(--mono); color: var(--accent); }
+  .calc-field select:focus, .calc-field input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .calc-result { margin-top: 18px; padding: 16px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--border); }
+  .calc-result .big { font-size: 27px; font-weight: 800; font-family: var(--mono); color: var(--accent); font-variant-numeric: tabular-nums; }
   .calc-result .detail { font-size: 13px; color: var(--text-dim); margin-top: 6px; }
   .calc-result .detail b { color: var(--text); }
   .calc-result .usd-small { font-size: 12px; color: var(--text-faint); margin-top: 2px; }
@@ -209,7 +245,7 @@
 
   @media (max-width: 640px) {
     .grid { grid-template-columns: 1fr; }
-    .controls { position: static; }
+    .controls { position: static; background: none; backdrop-filter: none; }
     .sort-row .hint { display: none; }
   }
 </style>
@@ -336,6 +372,32 @@ function toCNY(provider, price) {
 function toUSD(provider, price) {
   return provider.currency === "CNY" ? price / RATE : price;
 }
+// 徽章配色：按徽章文本映射到语义色（绿=最便宜，品牌=旗舰，琥珀=顶级，蓝=推理，灰=轻量）
+function badgeColorClass(badge, flag, hidden) {
+  if (hidden) return "hidden";
+  if (flag) return "flag";
+  const map = {
+    "最便宜": "green", "便宜": "green",
+    "旗舰": "brand", "最强": "brand", "新一代": "brand", "经典": "brand",
+    "顶级": "amber", "Pro": "amber",
+    "推理": "blue",
+    "轻量": "neutral", "最快": "neutral",
+    "优惠": "teal"
+  };
+  return map[badge] || "";
+}
+
+/* ============ 视觉锚点：每厂商最便宜模型 ============ */
+let cheapestSet = new Set();
+function computeCheapest() {
+  cheapestSet = new Set();
+  PROVIDERS.forEach(p => {
+    const visible = p.models.filter(m => !isHidden(p, m));
+    if (!visible.length) return;
+    const min = Math.min(...visible.map(m => toCNY(p, m.input)));
+    visible.forEach(m => { if (toCNY(p, m.input) === min) cheapestSet.add(hideKey(p, m)); });
+  });
+}
 
 function buildChips() {
   chips.innerHTML = "";
@@ -370,11 +432,14 @@ function filteredModels() {
 }
 
 /* ============ 卡片视图 ============ */
-function card(provider, model, hidden) {
+function card(provider, model, hidden, index) {
   const el = document.createElement("div");
   el.className = "card" + (hidden ? " hidden-model" : "");
-  const badgeCls = hidden ? " hidden" : (model.flag ? " flag" : (model.badge === "最便宜" || model.badge === "便宜" ? " green" : ""));
-  const badgeText = hidden ? "已隐藏" : model.badge;
+  el.style.animationDelay = (index % 28) * 22 + "ms";
+  const isCheapest = cheapestSet.has(hideKey(provider, model));
+  const effBadge = model.badge || (isCheapest ? "最便宜" : "");
+  const badgeCls = hidden ? " hidden" : badgeColorClass(effBadge, model.flag, hidden);
+  const badgeText = hidden ? "已隐藏" : effBadge;
   el.innerHTML = `
     <div class="card-top">
       <div>
@@ -408,6 +473,7 @@ function card(provider, model, hidden) {
 
 function renderCard(list) {
   content.innerHTML = "";
+  let idx = 0;
   if (currentSort === "provider") {
     PROVIDERS.forEach(p => {
       if (currentProvider !== "all" && currentProvider !== p.id) return;
@@ -424,7 +490,7 @@ function renderCard(list) {
         ${p.note ? `<p class="note" style="margin:0 0 12px">${p.note}</p>` : ""}
         <div class="grid"></div>`;
       const grid = section.querySelector(".grid");
-      items.forEach(x => grid.appendChild(card(x.provider, x.model, x.hidden)));
+      items.forEach(x => grid.appendChild(card(x.provider, x.model, x.hidden, idx++)));
       content.appendChild(section);
     });
   } else {
@@ -432,7 +498,7 @@ function renderCard(list) {
     section.className = "provider";
     const grid = document.createElement("div");
     grid.className = "grid";
-    list.forEach(x => grid.appendChild(card(x.provider, x.model, x.hidden)));
+    list.forEach(x => grid.appendChild(card(x.provider, x.model, x.hidden, idx++)));
     section.appendChild(grid);
     content.appendChild(section);
   }
@@ -473,11 +539,14 @@ function renderTable(list) {
       <tbody></tbody>
     </table>`;
   const tbody = wrap.querySelector("tbody");
-  sorted.forEach(x => {
+  sorted.forEach((x, i) => {
     const m = x.model, p = x.provider, hidden = x.hidden;
-    const badgeCls = hidden ? " hidden" : (m.flag ? " flag" : (m.badge === "最便宜" || m.badge === "便宜" ? " green" : ""));
-    const badgeText = hidden ? "已隐藏" : m.badge;
+    const isCheapest = cheapestSet.has(hideKey(p, m));
+    const effBadge = m.badge || (isCheapest ? "最便宜" : "");
+    const badgeCls = hidden ? " hidden" : badgeColorClass(effBadge, m.flag, hidden);
+    const badgeText = hidden ? "已隐藏" : effBadge;
     const tr = document.createElement("tr");
+    tr.style.animationDelay = (i % 40) * 18 + "ms";
     tr.className = hidden ? "hidden-model" : "";
     tr.innerHTML = `
       <td><span class="t-provider"><span class="dot" style="background:${p.color}"></span>${p.name}${p.unofficial ? ' <span class="t-badge t-unofficial">非官方</span>' : ''}</span></td>
@@ -503,6 +572,7 @@ function renderTable(list) {
 }
 
 function render() {
+  computeCheapest();
   const list = filteredModels();
   empty.style.display = list.length ? "none" : "block";
   const hiddenCount = hiddenSet.size;
