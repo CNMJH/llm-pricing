@@ -269,8 +269,8 @@
     <div class="controls-bar">
       <input id="search" type="text" placeholder="搜索模型名称或 API ID…">
       <div class="view-toggle" id="view-toggle">
-        <button data-view="card" class="active">卡片</button>
-        <button data-view="table">表格</button>
+        <button data-view="card">卡片</button>
+        <button data-view="table" class="active">表格</button>
       </div>
       <div class="chips" id="chips"></div>
     </div>
@@ -348,7 +348,7 @@ const search = document.getElementById("search");
 const empty = document.getElementById("empty");
 let currentProvider = "all";
 let currentSort = "provider";
-let viewMode = "card";
+let viewMode = "table";
 let tableSort = { key: "provider", dir: 1 };
 
 /* ============ 工具 ============ */
