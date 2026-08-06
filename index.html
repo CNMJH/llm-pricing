@@ -318,12 +318,12 @@
   </section>
 
   <footer>
-    数据来源：OpenRouter Models API + 各厂商官方定价页（每天 10:00 自动更新）<br>
+    数据来源：OpenRouter Models API + 各厂商官方定价页（每天自动更新）<br>
     汇率为公开接口实时抓取，价格会随厂商政策变动，请以官网最新页面为准
   </footer>
 </div>
 
-<script src="data.js?v=f0b7bcd9"></script>
+<script src="data.js?v=d0e2a122"></script>
 <script>
 const PROVIDERS = (window.PRICING_DATA && window.PRICING_DATA.providers) || [];
 const RATE = (window.PRICING_DATA && window.PRICING_DATA.cnyRate) || 7.2;
@@ -343,6 +343,8 @@ function toggleHidden(provider, model) {
   const k = hideKey(provider, model);
   if (hiddenSet.has(k)) hiddenSet.delete(k); else hiddenSet.add(k);
   saveHidden();
+  buildCalcOptions(true);   // 隐藏/恢复后同步估算器下拉
+  updateCalc();
 }
 
 /* ============ 状态 ============ */
@@ -517,7 +519,14 @@ function sortTable(list) {
       case "model": return x.model.name;
       case "input": return toCNY(x.provider, x.model.input);
       case "output": return toCNY(x.provider, x.model.output);
-      case "ctx": return x.model.ctx === "—" ? 0 : parseInt(x.model.ctx) || 0;
+      case "ctx": {
+        const v = x.model.ctx;
+        if (!v || v === "—") return 0;
+        const num = parseFloat(v);
+        if (/k$/i.test(v)) return num * 1024;      // "195K" -> 199680
+        if (/m$/i.test(v)) return num * 1024 * 1024; // "1M" -> 1048576
+        return num;
+      }
       default: return x.provider.name;
     }
   };
@@ -605,6 +614,8 @@ document.getElementById("reset-hidden").addEventListener("click", () => {
   hiddenSet.clear();
   showHidden = false;
   saveHidden();
+  buildCalcOptions(true);
+  updateCalc();
   render();
 });
 document.querySelectorAll("#view-toggle button").forEach(btn => {
@@ -627,7 +638,9 @@ const calcTotal = document.getElementById("calc-total");
 const calcDetail = document.getElementById("calc-detail");
 const calcUsd = document.getElementById("calc-usd");
 
-function buildCalcOptions() {
+function buildCalcOptions(preserve) {
+  const prev = preserve && calcModel ? calcModel.value : null;
+  calcModel.innerHTML = "";
   PROVIDERS.forEach(p => {
     p.models.forEach(m => {
       if (isHidden(p, m)) return;   // 隐藏的模型不出现在估算器里
@@ -637,8 +650,16 @@ function buildCalcOptions() {
       calcModel.appendChild(opt);
     });
   });
+  // 尽量保留用户当前选中的模型（若它还没被隐藏）
+  if (prev && [...calcModel.options].some(o => o.value === prev)) calcModel.value = prev;
 }
 function updateCalc() {
+  if (!calcModel.value) {   // 全部模型被隐藏时下拉为空，避免 JSON.parse("") 崩溃
+    calcTotal.textContent = "¥0.00";
+    calcDetail.textContent = "";
+    calcUsd.textContent = "";
+    return;
+  }
   const d = JSON.parse(calcModel.value);
   const provider = PROVIDERS.find(p => p.id === d.pid);
   const inM = parseFloat(calcIn.value) || 0;
