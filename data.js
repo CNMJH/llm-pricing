@@ -573,6 +573,6 @@ window.PRICING_DATA = {
       ]
     }
   ],
-  "updatedAt": "2026-08-06",
-  "cnyRate": 6.7622
+  "updatedAt": "2026-08-07",
+  "cnyRate": 6.7634
 };
