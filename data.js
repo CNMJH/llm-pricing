@@ -243,8 +243,8 @@ window.PRICING_DATA = {
         {
           "name": "Gemini 3.6 Flash",
           "api": "gemini-3.6-flash",
-          "input": 1.5,
-          "output": 7.5,
+          "input": 0.75,
+          "output": 3.75,
           "ctx": "1M",
           "badge": "最新"
         },
@@ -573,6 +573,6 @@ window.PRICING_DATA = {
       ]
     }
   ],
-  "updatedAt": "2026-08-13",
-  "cnyRate": 6.7569
+  "updatedAt": "2026-08-14",
+  "cnyRate": 6.757
 };
