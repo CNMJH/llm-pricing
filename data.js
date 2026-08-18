@@ -73,8 +73,8 @@ window.PRICING_DATA = {
         {
           "name": "GPT-5.6 Sol",
           "api": "gpt-5.6-sol",
-          "input": 5.0,
-          "output": 30.0,
+          "input": 2.5,
+          "output": 15.0,
           "ctx": "1M",
           "badge": "新一代"
         },
@@ -573,6 +573,6 @@ window.PRICING_DATA = {
       ]
     }
   ],
-  "updatedAt": "2026-08-17",
-  "cnyRate": 6.7487
+  "updatedAt": "2026-08-18",
+  "cnyRate": 6.7531
 };
