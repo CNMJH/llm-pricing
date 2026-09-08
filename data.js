@@ -378,15 +378,15 @@ window.PRICING_DATA = {
         {
           "api": "glm-4.7-flash",
           "name": "GLM-4.7-Flash",
-          "input": 0.06,
+          "input": 0.0605,
           "output": 0.4,
           "ctx": "198K"
         },
         {
           "api": "glm-4.6",
           "name": "GLM-4.6",
-          "input": 0.43,
-          "output": 1.75,
+          "input": 0.55,
+          "output": 2.2,
           "ctx": "200K"
         },
         {
@@ -573,6 +573,6 @@ window.PRICING_DATA = {
       ]
     }
   ],
-  "updatedAt": "2026-09-07",
-  "cnyRate": 6.7194
+  "updatedAt": "2026-09-08",
+  "cnyRate": 6.7284
 };
