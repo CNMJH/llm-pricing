@@ -320,8 +320,8 @@ window.PRICING_DATA = {
         {
           "name": "DeepSeek V4-Flash",
           "api": "deepseek-v4-flash",
-          "input": 0.0871,
-          "output": 0.1742,
+          "input": 0.0886,
+          "output": 0.1772,
           "ctx": "1M",
           "badge": "便宜",
           "note": "1M 上下文，384K 最大输出，默认思考模式。"
@@ -329,8 +329,8 @@ window.PRICING_DATA = {
         {
           "name": "DeepSeek V4-Pro",
           "api": "deepseek-v4-pro",
-          "input": 0.87,
-          "output": 1.74,
+          "input": 0.9553,
+          "output": 1.9105,
           "ctx": "1M",
           "badge": "旗舰",
           "note": "1M 上下文，384K 最大输出。"
@@ -350,8 +350,8 @@ window.PRICING_DATA = {
         {
           "api": "glm-5.2",
           "name": "GLM-5.2",
-          "input": 0.966,
-          "output": 3.036,
+          "input": 0.6,
+          "output": 2.0,
           "ctx": "1M"
         },
         {
@@ -380,7 +380,7 @@ window.PRICING_DATA = {
           "name": "GLM-4.7-Flash",
           "input": 0.0605,
           "output": 0.4,
-          "ctx": "198K"
+          "ctx": "195K"
         },
         {
           "api": "glm-4.6",
@@ -545,8 +545,8 @@ window.PRICING_DATA = {
         {
           "api": "minimax-m2.5",
           "name": "MiniMax M2.5",
-          "input": 0.27,
-          "output": 1.08,
+          "input": 0.3,
+          "output": 1.2,
           "ctx": "200K"
         },
         {
@@ -573,6 +573,6 @@ window.PRICING_DATA = {
       ]
     }
   ],
-  "updatedAt": "2026-09-09",
-  "cnyRate": 6.7283
+  "updatedAt": "2026-09-10",
+  "cnyRate": 6.7255
 };
