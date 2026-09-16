@@ -566,13 +566,13 @@ window.PRICING_DATA = {
         {
           "api": "minimax-m1",
           "name": "MiniMax M1",
-          "input": 0.55,
+          "input": 0.4,
           "output": 2.2,
           "ctx": "1M"
         }
       ]
     }
   ],
-  "updatedAt": "2026-09-15",
-  "cnyRate": 6.7252
+  "updatedAt": "2026-09-16",
+  "cnyRate": 6.7268
 };
