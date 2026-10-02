@@ -320,8 +320,8 @@ window.PRICING_DATA = {
         {
           "name": "DeepSeek V4-Flash",
           "api": "deepseek-v4-flash",
-          "input": 0.0419,
-          "output": 0.0837,
+          "input": 0.028,
+          "output": 0.056,
           "ctx": "1M",
           "badge": "便宜",
           "note": "1M 上下文，384K 最大输出，默认思考模式。"
@@ -573,6 +573,6 @@ window.PRICING_DATA = {
       ]
     }
   ],
-  "updatedAt": "2026-10-01",
-  "cnyRate": 6.7169
+  "updatedAt": "2026-10-02",
+  "cnyRate": 6.7146
 };
