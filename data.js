@@ -329,8 +329,8 @@ window.PRICING_DATA = {
         {
           "name": "DeepSeek V4-Pro",
           "api": "deepseek-v4-pro",
-          "input": 0.436,
-          "output": 0.8721,
+          "input": 0.4275,
+          "output": 0.855,
           "ctx": "1M",
           "badge": "旗舰",
           "note": "1M 上下文，384K 最大输出。"
@@ -350,15 +350,15 @@ window.PRICING_DATA = {
         {
           "api": "glm-5.2",
           "name": "GLM-5.2",
-          "input": 0.06,
+          "input": 0.05,
           "output": 7.0,
           "ctx": "1M"
         },
         {
           "api": "glm-5.1",
           "name": "GLM-5.1",
-          "input": 0.966,
-          "output": 3.036,
+          "input": 1.33,
+          "output": 4.18,
           "ctx": "200K"
         },
         {
@@ -559,8 +559,8 @@ window.PRICING_DATA = {
         {
           "api": "minimax-m2",
           "name": "MiniMax M2",
-          "input": 0.3,
-          "output": 1.2,
+          "input": 0.255,
+          "output": 1.02,
           "ctx": "200K"
         },
         {
@@ -573,6 +573,6 @@ window.PRICING_DATA = {
       ]
     }
   ],
-  "updatedAt": "2026-10-13",
-  "cnyRate": 6.7058
+  "updatedAt": "2026-10-14",
+  "cnyRate": 6.705
 };
