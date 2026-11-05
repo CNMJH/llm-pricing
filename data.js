@@ -538,8 +538,8 @@ window.PRICING_DATA = {
         {
           "api": "minimax-m2.7",
           "name": "MiniMax M2.7",
-          "input": 0.3,
-          "output": 1.2,
+          "input": 0.21,
+          "output": 0.84,
           "ctx": "200K"
         },
         {
@@ -573,6 +573,6 @@ window.PRICING_DATA = {
       ]
     }
   ],
-  "updatedAt": "2026-11-04",
-  "cnyRate": 6.684
+  "updatedAt": "2026-11-05",
+  "cnyRate": 6.6854
 };
