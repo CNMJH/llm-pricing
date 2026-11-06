@@ -329,8 +329,8 @@ window.PRICING_DATA = {
         {
           "name": "DeepSeek V4-Pro",
           "api": "deepseek-v4-pro",
-          "input": 1.6,
-          "output": 3.2,
+          "input": 0.8413,
+          "output": 1.6826,
           "ctx": "1M",
           "badge": "旗舰",
           "note": "1M 上下文，384K 最大输出。"
@@ -573,6 +573,6 @@ window.PRICING_DATA = {
       ]
     }
   ],
-  "updatedAt": "2026-11-05",
-  "cnyRate": 6.6854
+  "updatedAt": "2026-11-06",
+  "cnyRate": 6.6825
 };
