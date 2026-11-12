@@ -73,8 +73,8 @@ window.PRICING_DATA = {
         {
           "name": "GPT-5.6 Sol",
           "api": "gpt-5.6-sol",
-          "input": 4.0,
-          "output": 20.0,
+          "input": 4.4,
+          "output": 22.0,
           "ctx": "1M",
           "badge": "新一代"
         },
@@ -329,8 +329,8 @@ window.PRICING_DATA = {
         {
           "name": "DeepSeek V4-Pro",
           "api": "deepseek-v4-pro",
-          "input": 0.8837,
-          "output": 1.7675,
+          "input": 0.8923,
+          "output": 1.7845,
           "ctx": "1M",
           "badge": "旗舰",
           "note": "1M 上下文，384K 最大输出。"
@@ -357,8 +357,8 @@ window.PRICING_DATA = {
         {
           "api": "glm-5.1",
           "name": "GLM-5.1",
-          "input": 1.33,
-          "output": 4.18,
+          "input": 1.4,
+          "output": 4.4,
           "ctx": "200K"
         },
         {
@@ -573,6 +573,6 @@ window.PRICING_DATA = {
       ]
     }
   ],
-  "updatedAt": "2026-11-11",
-  "cnyRate": 6.6878
+  "updatedAt": "2026-11-12",
+  "cnyRate": 6.6858
 };
