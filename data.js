@@ -73,8 +73,8 @@ window.PRICING_DATA = {
         {
           "name": "GPT-5.6 Sol",
           "api": "gpt-5.6-sol",
-          "input": 4.0,
-          "output": 20.0,
+          "input": 4.4,
+          "output": 22.0,
           "ctx": "1M",
           "badge": "新一代"
         },
@@ -371,8 +371,8 @@ window.PRICING_DATA = {
         {
           "api": "glm-4.7",
           "name": "GLM-4.7",
-          "input": 0.6,
-          "output": 2.2,
+          "input": 0.4,
+          "output": 1.75,
           "ctx": "200K"
         },
         {
@@ -573,6 +573,6 @@ window.PRICING_DATA = {
       ]
     }
   ],
-  "updatedAt": "2026-11-14",
-  "cnyRate": 6.6849
+  "updatedAt": "2026-11-15",
+  "cnyRate": 6.6897
 };
