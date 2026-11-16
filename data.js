@@ -73,8 +73,8 @@ window.PRICING_DATA = {
         {
           "name": "GPT-5.6 Sol",
           "api": "gpt-5.6-sol",
-          "input": 4.4,
-          "output": 22.0,
+          "input": 4.0,
+          "output": 20.0,
           "ctx": "1M",
           "badge": "新一代"
         },
@@ -399,8 +399,8 @@ window.PRICING_DATA = {
         {
           "api": "glm-4.5-air",
           "name": "GLM-4.5-Air",
-          "input": 0.2,
-          "output": 1.1,
+          "input": 0.13,
+          "output": 0.85,
           "ctx": "128K"
         }
       ]
@@ -545,8 +545,8 @@ window.PRICING_DATA = {
         {
           "api": "minimax-m2.5",
           "name": "MiniMax M2.5",
-          "input": 0.27,
-          "output": 0.95,
+          "input": 0.295,
+          "output": 1.2,
           "ctx": "193K"
         },
         {
@@ -573,6 +573,6 @@ window.PRICING_DATA = {
       ]
     }
   ],
-  "updatedAt": "2026-11-15",
-  "cnyRate": 6.6897
+  "updatedAt": "2026-11-16",
+  "cnyRate": 6.6784
 };
