@@ -350,15 +350,15 @@ window.PRICING_DATA = {
         {
           "api": "glm-5.2",
           "name": "GLM-5.2",
-          "input": 0.007,
-          "output": 6.8,
+          "input": 0.62,
+          "output": 2.42,
           "ctx": "1M"
         },
         {
           "api": "glm-5.1",
           "name": "GLM-5.1",
-          "input": 1.4,
-          "output": 4.4,
+          "input": 1.19,
+          "output": 3.74,
           "ctx": "200K"
         },
         {
@@ -573,6 +573,6 @@ window.PRICING_DATA = {
       ]
     }
   ],
-  "updatedAt": "2026-11-18",
-  "cnyRate": 6.6799
+  "updatedAt": "2026-11-19",
+  "cnyRate": 6.6808
 };
