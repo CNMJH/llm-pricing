@@ -329,8 +329,8 @@ window.PRICING_DATA = {
         {
           "name": "DeepSeek V4-Pro",
           "api": "deepseek-v4-pro",
-          "input": 0.6846,
-          "output": 1.551,
+          "input": 0.7353,
+          "output": 1.5216,
           "ctx": "1M",
           "badge": "旗舰",
           "note": "1M 上下文，384K 最大输出。"
@@ -387,7 +387,7 @@ window.PRICING_DATA = {
           "name": "GLM-4.6",
           "input": 0.5,
           "output": 2.0,
-          "ctx": "200K"
+          "ctx": "198K"
         },
         {
           "api": "glm-4.5",
@@ -573,6 +573,6 @@ window.PRICING_DATA = {
       ]
     }
   ],
-  "updatedAt": "2026-11-25",
-  "cnyRate": 6.6782
+  "updatedAt": "2026-11-26",
+  "cnyRate": 6.6832
 };
